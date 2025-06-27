@@ -2,7 +2,7 @@ package com.movie.rate.application.usecases
 
 import com.movie.rate.application.domain.valueobjects.MovieId
 import com.movie.rate.domain.entities.Movie
-import com.movie.rate.domain.exception.DomainExceptions.MovieNotFoundException
+import com.movie.rate.domain.exception.MovieNotFoundException
 import com.movie.rate.domain.repositories.MovieRepository
 import io.mockk.every
 import io.mockk.mockk

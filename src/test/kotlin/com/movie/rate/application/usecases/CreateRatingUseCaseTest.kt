@@ -8,8 +8,8 @@ import com.movie.rate.application.dto.CreateRatingRequest
 import com.movie.rate.domain.entities.Movie
 import com.movie.rate.domain.entities.Rating
 import com.movie.rate.domain.entities.User
-import com.movie.rate.domain.exception.DomainExceptions.MovieNotFoundException
-import com.movie.rate.domain.exception.DomainExceptions.UserNotFoundException
+import com.movie.rate.domain.exception.MovieNotFoundException
+import com.movie.rate.domain.exception.UserNotFoundException
 import com.movie.rate.domain.repositories.MovieRepository
 import com.movie.rate.domain.repositories.RatingRepository
 import com.movie.rate.domain.repositories.UserRepository

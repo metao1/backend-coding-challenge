@@ -2,8 +2,9 @@ package com.movie.rate.application.usecases
 
 import com.movie.rate.application.domain.valueobjects.UserId
 import com.movie.rate.application.dto.UserResponse
-import com.movie.rate.domain.exception.DomainExceptions
+import com.movie.rate.domain.exception.UserNotFoundException
 import com.movie.rate.domain.repositories.UserRepository
+
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Optional
@@ -16,7 +17,7 @@ class GetUserUseCase(
     fun execute(userId: String): UserResponse {
         val id = UserId.fromString(userId)
         val user = Optional.ofNullable(userRepository.findById(id))
-            .orElseThrow { DomainExceptions.UserNotFoundException(userId) }
+            .orElseThrow { UserNotFoundException(userId) }
 
         return UserResponse.fromDomain(user)
     }

@@ -2,7 +2,7 @@ package com.movie.rate.application.usecases
 
 import com.movie.rate.application.domain.valueobjects.Email
 import com.movie.rate.application.dto.CreateUserRequestDto
-import com.movie.rate.domain.exception.DomainExceptions.UserAlreadyExistsException
+import com.movie.rate.domain.exception.UserAlreadyExistsException
 import com.movie.rate.domain.repositories.UserRepository
 import io.mockk.every
 import io.mockk.mockk

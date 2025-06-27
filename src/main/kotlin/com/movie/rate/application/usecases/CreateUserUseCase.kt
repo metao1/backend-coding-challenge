@@ -5,7 +5,7 @@ import com.movie.rate.application.domain.valueobjects.UserId
 import com.movie.rate.application.dto.CreateUserRequestDto
 import com.movie.rate.application.dto.UserResponse
 import com.movie.rate.domain.entities.User
-import com.movie.rate.domain.exception.DomainExceptions.UserAlreadyExistsException
+import com.movie.rate.domain.exception.UserAlreadyExistsException
 import com.movie.rate.domain.repositories.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

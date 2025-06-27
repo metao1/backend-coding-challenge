@@ -2,7 +2,7 @@ package com.movie.rate.application.usecases
 
 import com.movie.rate.application.domain.valueobjects.UserId
 import com.movie.rate.application.dto.RatingResponse
-import com.movie.rate.domain.exception.DomainExceptions.UserNotFoundException
+import com.movie.rate.domain.exception.UserNotFoundException
 import com.movie.rate.domain.repositories.RatingRepository
 import com.movie.rate.domain.repositories.UserRepository
 import org.springframework.stereotype.Service

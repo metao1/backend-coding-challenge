@@ -1,19 +1,22 @@
 package com.movie.rate.domain.exception
 
-class DomainExceptions {
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.ResponseStatus
 
-    class MovieNotFoundException(
-        movieId: String,
-        cause: Throwable? = null
-    ) : RuntimeException("Movie with identifier '$movieId' not found", cause)
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class MovieNotFoundException(
+    movieId: String,
+    cause: Throwable? = null
+) : RuntimeException("Movie with identifier '$movieId' not found", cause)
 
-    class UserAlreadyExistsException(
-        identifier: String,
-        cause: Throwable? = null
-    ) : RuntimeException("User with identifier '$identifier' already exists", cause)
+@ResponseStatus(HttpStatus.CONFLICT)
+class UserAlreadyExistsException(
+    identifier: String,
+    cause: Throwable? = null
+) : RuntimeException("User with identifier '$identifier' already exists", cause)
 
-    class UserNotFoundException(
-        identifier: String,
-        cause: Throwable? = null
-    ) : RuntimeException("User with identifier '$identifier' not found", cause)
-}
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class UserNotFoundException(
+    identifier: String,
+    cause: Throwable? = null
+) : RuntimeException("User with identifier '$identifier' not found", cause)
