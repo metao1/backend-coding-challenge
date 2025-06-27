@@ -3,18 +3,10 @@ package com.movie.rate.integration
 import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.hamcrest.Matchers.containsString
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.greaterThanOrEqualTo
-import org.hamcrest.Matchers.hasSize
-import org.hamcrest.Matchers.notNullValue
-
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_BAD_REQUEST
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_NOT_FOUND
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_OK
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.*
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.test.annotation.DirtiesContext
 
 /**
@@ -55,23 +47,6 @@ class MovieControllerIT : BaseIntegrationTest() {
 
         // UUID Constants
         private const val NON_EXISTENT_UUID = "00000000-0000-0000-0000-000000000000"
-    }
-
-    // Movie-specific test data initialization
-    private fun createTestMovie(
-        title: String = "Movie Test ${System.currentTimeMillis()}",
-        description: String = DEFAULT_MOVIE_DESCRIPTION,
-        releaseDate: String = DEFAULT_MOVIE_RELEASE_DATE,
-        genre: String = DEFAULT_MOVIE_GENRE,
-        director: String = DEFAULT_MOVIE_DIRECTOR
-    ): Map<String, Any> {
-        return mapOf(
-            "title" to title,
-            "description" to description,
-            "release_date" to releaseDate,
-            "genre" to genre,
-            "director" to director
-        )
     }
 
     @Test

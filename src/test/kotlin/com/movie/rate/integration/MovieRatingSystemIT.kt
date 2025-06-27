@@ -2,7 +2,7 @@ package com.movie.rate.integration
 
 import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
-import com.movie.rate.integration.TestUtils.Companion.createTestUser
+
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.*
@@ -22,22 +22,6 @@ import org.springframework.test.annotation.DirtiesContext
  */
 @DirtiesContext
 class MovieRatingSystemIT : BaseIntegrationTest() {
-
-    private fun createTestMovie(
-        title: String = "Test Movie ${System.currentTimeMillis()}",
-        description: String = "A comprehensive test movie for integration testing",
-        releaseDate: String = "2024-01-15",
-        genre: String = "Science Fiction",
-        director: String = "Test Director"
-    ): Map<String, Any> {
-        return mapOf(
-            "title" to title,
-            "description" to description,
-            "release_date" to releaseDate,
-            "genre" to genre,
-            "director" to director
-        )
-    }
 
     private fun createTestRating(
         userId: String,
@@ -274,7 +258,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .response()
 
         // Verify the duplicate rating was handled successfully
-        assert(duplicateResponse.statusCode == `HttpStatus`.CREATED.value()) {
+        assert(duplicateResponse.statusCode == HttpStatus.CREATED.value()) {
             "Expected status 201, but got ${duplicateResponse.statusCode}. Response: ${duplicateResponse.asString()}"
         }
 

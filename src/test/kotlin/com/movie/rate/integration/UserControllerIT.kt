@@ -1,7 +1,6 @@
 package com.movie.rate.integration
 
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
-import com.movie.rate.integration.TestUtils.Companion.createTestUser
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 
