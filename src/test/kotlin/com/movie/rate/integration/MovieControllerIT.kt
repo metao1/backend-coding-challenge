@@ -2,12 +2,14 @@ package com.movie.rate.integration
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.containsString
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.greaterThanOrEqualTo
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.notNullValue
+
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
-import kotlin.to
 
 /**
  * Integration tests for Movie Controller.
@@ -17,8 +19,6 @@ import kotlin.to
  * - Movie listing with pagination
  * - Error handling for movie operations
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 @DirtiesContext
 class MovieControllerIT : BaseIntegrationTest() {
 
@@ -229,6 +229,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             "Expected error status (>=$STATUS_BAD_REQUEST), but got ${response.statusCode}. Response: ${response.asString()}"
         }
     }
+
 
     @Test
     fun `should return error for non-existent movie`() {
