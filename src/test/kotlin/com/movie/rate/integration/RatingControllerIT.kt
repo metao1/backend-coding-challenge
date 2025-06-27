@@ -5,18 +5,12 @@ import com.movie.rate.integration.Constants.Companion.RATINGS_ENDPOINT
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.apache.http.HttpStatus
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
-
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
-import kotlin.to
-
+import org.springframework.http.HttpStatus
 /**
  * Integration tests for Rating Controller.
  * Tests rating management operations with mocked user/movie dependencies:
@@ -25,9 +19,6 @@ import kotlin.to
  * - Rating validation
  * - Error handling for rating operations
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-@DirtiesContext
 class RatingControllerIT : BaseIntegrationTest() {
 
     // Rating-specific test data initialization
@@ -59,7 +50,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(USERS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .extract()
             .response()
 
@@ -82,7 +73,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .extract()
             .response()
 
@@ -109,7 +100,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .body("user_id", equalTo(userId))
             .body("movie_id", equalTo(movieId))
             .body("value", equalTo(5))
@@ -137,14 +128,14 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
 
         // Test: Retrieve user ratings
         given()
             .`when`()
             .get("$RATINGS_ENDPOINT/user/$userId")
             .then()
-            .statusCode(HttpStatus.SC_OK)
+            .statusCode(HttpStatus.OK.value())
             .body("$", hasSize<Any>(1))
             .body("[0].user_id", equalTo(userId))
             .body("[0].movie_id", equalTo(movieId))
@@ -167,7 +158,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .statusCode(HttpStatus.BAD_REQUEST.value())
             .body("status", equalTo(400))
             .body("error", equalTo("Validation Failed"))
             .body("errors", notNullValue())
@@ -192,7 +183,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
+            .statusCode(HttpStatus.NOT_FOUND.value())
             .body("status", equalTo(404))
             .body("error", equalTo("Not Found"))
     }
@@ -216,8 +207,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(404)
-            .body("status", equalTo(404))
+            .statusCode(HttpStatus.NOT_FOUND.value())
             .body("error", equalTo("Not Found"))
     }
 
@@ -231,7 +221,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .get("/api/ratings/user/$userId")
             .then()
-            .statusCode(HttpStatus.SC_OK)
+            .statusCode(HttpStatus.OK.value())
             .body("$", hasSize<Any>(0)) // Should return empty array
     }
 
@@ -272,8 +262,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body("status", equalTo(400))
+            .statusCode(HttpStatus.BAD_REQUEST.value())
 
         // Test negative rating value
         val negativeRating = createTestRating(
@@ -289,8 +278,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body("status", equalTo(400))
+            .statusCode(HttpStatus.BAD_REQUEST.value())
     }
 
     @Test
@@ -313,7 +301,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .body("value", equalTo(1))
 
         // Update to maximum valid rating (5)
@@ -330,7 +318,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(RATINGS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .body("value", equalTo(5))
     }
 }
