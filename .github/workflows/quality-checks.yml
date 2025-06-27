@@ -30,16 +30,12 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-            
-      
-    - name: Run Kotlin linting (ktlint)
-      run: gradle ktlintCheck
-      
+
     - name: Run compilation check
       run: gradle compileKotlin compileTestKotlin
       
-    - name: Run tests
-      run: gradle test
+    - name: Run check
+      run: gradle check
       
     - name: Generate test report
       uses: dorny/test-reporter@v2

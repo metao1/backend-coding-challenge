@@ -52,9 +52,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
     // TestContainers
-    testImplementation("org.testcontainers:junit-jupiter:1.19.6") {
-        exclude(group = "junit", module = "junit")
-    }
+    testImplementation("org.testcontainers:junit-jupiter:1.19.6")
     testImplementation("org.testcontainers:postgresql:1.19.6")
 
     // RestAssured
@@ -95,6 +93,8 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+
 
 // JPA configuration for Kotlin
 allOpen {
