@@ -11,4 +11,9 @@ class DomainExceptions {
         identifier: String,
         cause: Throwable? = null
     ) : RuntimeException("User with identifier '$identifier' already exists", cause)
+
+    class UserNotFoundException(
+        identifier: String,
+        cause: Throwable? = null
+    ) : RuntimeException("User with identifier '$identifier' not found", cause)
 }

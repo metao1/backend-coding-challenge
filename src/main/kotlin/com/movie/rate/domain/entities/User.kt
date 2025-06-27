@@ -24,6 +24,15 @@ data class User private constructor(
             username: String,
             fullName: String
         ): User = User(id, email, username, fullName)
+
+        fun fromPersistence(
+            id: UserId,
+            email: Email,
+            username: String,
+            fullName: String,
+            createdAt: LocalDateTime,
+            updatedAt: LocalDateTime?
+        ): User = User(id, email, username, fullName, createdAt, updatedAt)
     }
 
     override fun equals(other: Any?): Boolean = when {

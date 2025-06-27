@@ -26,6 +26,15 @@ data class Rating private constructor(
             value: RatingValue,
             comment: String?
         ): Rating = Rating(userId, movieId, value, comment)
+
+        fun fromPersistence(
+            userId: UserId,
+            movieId: MovieId,
+            value: RatingValue,
+            comment: String?,
+            createdAt: LocalDateTime,
+            updatedAt: LocalDateTime?
+        ): Rating = Rating(userId, movieId, value, comment, createdAt, updatedAt)
     }
 
     fun updateRating(newValue: RatingValue, newComment: String?) {
