@@ -3,12 +3,13 @@ package com.movie.rate.integration
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.apache.http.HttpStatus
+
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus
 
 /**
  * Integration tests for User Controller.
@@ -55,7 +56,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(USERS_ENDPOINT)
             .then()
-            .statusCode(HttpStatus.SC_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .body("email", equalTo(DEFAULT_USER_EMAIL))
             .body("username", equalTo(DEFAULT_USERNAME))
             .body("full_name", equalTo(DEFAULT_FULL_NAME))
@@ -78,7 +79,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(USERS_ENDPOINT)
             .then()
-            .statusCode(201)
+            .statusCode(HttpStatus.CREATED.value())
             .extract()
             .response()
 
@@ -113,7 +114,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(USERS_ENDPOINT)
             .then()
-            .statusCode(201)
+            .statusCode(HttpStatus.CREATED.value())
             .body("email", equalTo("contract.test@example.com"))
             .body("username", equalTo("contracttest"))
             .body("full_name", equalTo("Contract Test User"))

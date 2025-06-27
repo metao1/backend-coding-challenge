@@ -11,6 +11,7 @@ import org.hamcrest.Matchers.lessThan
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
 
@@ -48,7 +49,7 @@ class PerformanceIT : BaseIntegrationTest() {
         val results = futures.map { it.get() }
 
         // All requests should succeed
-        assertTrue(results.all { it == 201 }, "All concurrent requests should succeed")
+        assertTrue(results.all { it == HttpStatus.CREATED.value() }, "All concurrent requests should succeed")
 
         executor.shutdown()
     }
@@ -83,7 +84,7 @@ class PerformanceIT : BaseIntegrationTest() {
         }
 
         val results = futures.map { it.get() }
-        assertTrue(results.all { it == 201 }, "All concurrent movie creation requests should succeed")
+        assertTrue(results.all { it == HttpStatus.CREATED.value() }, "All concurrent movie creation requests should succeed")
 
         executor.shutdown()
     }
@@ -118,7 +119,7 @@ class PerformanceIT : BaseIntegrationTest() {
                     .`when`()
                     .post(MOVIES_ENDPOINT)
                     .then()
-                    .statusCode(201)
+                    .statusCode(HttpStatus.CREATED.value())
             }
         }
 
