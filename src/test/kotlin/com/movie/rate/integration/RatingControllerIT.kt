@@ -47,10 +47,10 @@ class RatingControllerIT : BaseIntegrationTest() {
 
     // Helper method to create a user for rating tests (minimal setup)
     private fun createUserForRatingTest(): String {
-        val userRequest = mapOf(
-            "email" to "rating.user.${System.currentTimeMillis()}@example.com",
-            "username" to "ratinguser${System.currentTimeMillis()}",
-            "full_name" to "Rating User Test"
+        val userRequest = createTestUser(
+            email = "rating.user.${System.currentTimeMillis()}@example.com",
+            username = "ratinguser${System.currentTimeMillis()}",
+            fullName = "Rating User Test"
         )
 
         val userResponse = given()
@@ -63,17 +63,17 @@ class RatingControllerIT : BaseIntegrationTest() {
             .extract()
             .response()
 
-        return userResponse.path<String>("id")
+        return userResponse.path("id")
     }
 
     // Helper method to create a movie for rating tests (minimal setup)
     private fun createMovieForRatingTest(): String {
-        val movieRequest = mapOf(
-            "title" to "Rating Movie Test ${System.currentTimeMillis()}",
-            "description" to "A test movie for rating controller testing",
-            "release_date" to "2024-01-01",
-            "genre" to "Test",
-            "director" to "Test Director"
+        val movieRequest = createTestMovie(
+            title = "Rating Test Movie ${System.currentTimeMillis()}",
+            description = "A test movie for rating controller testing",
+            releaseDate = "2024-01-01",
+            genre = "Drama",
+            director = "Test Director"
         )
 
         val movieResponse = given()
@@ -86,7 +86,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             .extract()
             .response()
 
-        return movieResponse.path<String>("id")
+        return movieResponse.path("id")
     }
 
     @Test
@@ -100,7 +100,7 @@ class RatingControllerIT : BaseIntegrationTest() {
             userId = userId,
             movieId = movieId,
             value = 5,
-            comment = "Excellent movie for rating controller testing!"
+            comment = "Excellent movie for rating creation testing"
         )
 
         given()
