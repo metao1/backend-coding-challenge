@@ -1,6 +1,7 @@
 package com.movie.rate.integration
 
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
+import com.movie.rate.integration.TestUtils.Companion.createTestUser
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 
@@ -27,19 +28,6 @@ class UserControllerIT : BaseIntegrationTest() {
         private const val DEFAULT_USERNAME = "integrationtest"
         private const val DEFAULT_FULL_NAME = "Integration Test User"
 
-    }
-
-    // User-specific test data initialization
-    private fun createTestUser(
-        email: String = "user.test.${System.currentTimeMillis()}@example.com",
-        username: String = "usertest${System.currentTimeMillis()}",
-        fullName: String = "User Test ${System.currentTimeMillis()}"
-    ): Map<String, Any> {
-        return mapOf(
-            "email" to email,
-            "username" to username,
-            "full_name" to fullName
-        )
     }
 
     @Test
