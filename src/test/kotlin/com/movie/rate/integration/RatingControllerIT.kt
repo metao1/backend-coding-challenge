@@ -1,5 +1,8 @@
 package com.movie.rate.integration
 
+import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
+import com.movie.rate.integration.Constants.Companion.RATINGS_ENDPOINT
+import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.apache.http.HttpStatus
@@ -26,13 +29,6 @@ import kotlin.to
 @ActiveProfiles("test")
 @DirtiesContext
 class RatingControllerIT : BaseIntegrationTest() {
-
-    companion object {
-        // API Endpoints
-        private const val USERS_ENDPOINT = "/api/users"
-        private const val MOVIES_ENDPOINT = "/api/movies"
-        private const val RATINGS_ENDPOINT = "/api/ratings"
-    }
 
     // Rating-specific test data initialization
     private fun createTestRating(

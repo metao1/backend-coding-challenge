@@ -1,5 +1,6 @@
 package com.movie.rate.integration
 
+import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.containsString
@@ -9,6 +10,11 @@ import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.notNullValue
 
 import org.junit.jupiter.api.Test
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_BAD_REQUEST
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_NOT_FOUND
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_OK
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.test.annotation.DirtiesContext
 
 /**
@@ -23,14 +29,6 @@ import org.springframework.test.annotation.DirtiesContext
 class MovieControllerIT : BaseIntegrationTest() {
 
     companion object {
-        // API Endpoints
-        private const val MOVIES_ENDPOINT = "/api/movies"
-
-        // HTTP Status Codes
-        private const val STATUS_OK = 200
-        private const val STATUS_CREATED = 201
-        private const val STATUS_BAD_REQUEST = 400
-        private const val STATUS_NOT_FOUND = 404
 
         // Default Test Values
         private const val DEFAULT_MOVIE_TITLE = "Integration Test Movie"
@@ -92,7 +90,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(STATUS_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .body("title", equalTo(DEFAULT_MOVIE_TITLE))
             .body("description", containsString("comprehensive test movie"))
             .body("release_date", equalTo(DEFAULT_MOVIE_RELEASE_DATE))
@@ -119,7 +117,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(STATUS_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
             .extract()
             .response()
 
@@ -153,7 +151,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(STATUS_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
 
         // Test pagination using GET endpoint with query parameters
         given()
@@ -188,7 +186,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(STATUS_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
 
         // Test simple GET endpoint with default parameters
         given()
@@ -260,7 +258,7 @@ class MovieControllerIT : BaseIntegrationTest() {
             .`when`()
             .post(MOVIES_ENDPOINT)
             .then()
-            .statusCode(STATUS_CREATED)
+            .statusCode(HttpStatus.CREATED.value())
 
         // Test page 0 (first page)
         given()

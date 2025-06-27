@@ -1,5 +1,6 @@
 package com.movie.rate.integration
 
+import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.apache.http.HttpStatus
@@ -20,9 +21,6 @@ import org.junit.jupiter.api.Test
 class UserControllerIT : BaseIntegrationTest() {
 
     companion object {
-        // API Endpoints
-        private const val USERS_ENDPOINT = "/api/users"
-
         // Default Test Values
         private const val DEFAULT_USER_EMAIL = "integration.test@example.com"
         private const val DEFAULT_USERNAME = "integrationtest"
@@ -78,7 +76,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(userRequest)
             .`when`()
-            .post("/api/users")
+            .post(USERS_ENDPOINT)
             .then()
             .statusCode(201)
             .extract()
@@ -113,7 +111,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(jsonPayload)
             .`when`()
-            .post("/api/users")
+            .post(USERS_ENDPOINT)
             .then()
             .statusCode(201)
             .body("email", equalTo("contract.test@example.com"))
@@ -136,7 +134,7 @@ class UserControllerIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(invalidUserRequest)
             .`when`()
-            .post("/api/users")
+            .post(USERS_ENDPOINT)
             .then()
             .statusCode(400)
             .body("status", equalTo(400))
