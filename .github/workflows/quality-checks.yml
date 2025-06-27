@@ -44,7 +44,7 @@ jobs:
       run: ./gradlew test
       
     - name: Generate test report
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         name: Test Results
@@ -52,14 +52,14 @@ jobs:
         reporter: java-junit
         
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results
         path: build/test-results/
         
     - name: Upload build reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: build-reports
