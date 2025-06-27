@@ -1,8 +1,8 @@
 package com.movie.rate.integration
 
 import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
+import com.movie.rate.integration.Constants.Companion.RATINGS_ENDPOINT
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
-
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.*
@@ -91,7 +91,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(ratingRequest)
             .`when`()
-            .post("/api/ratings")
+            .post(RATINGS_ENDPOINT)
             .then()
             .statusCode(HttpStatus.CREATED.value())
             .body("user_id", equalTo(createdUserId))
@@ -252,7 +252,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(duplicateRatingRequest)
             .`when`()
-            .post("/api/ratings")
+            .post(RATINGS_ENDPOINT)
             .then()
             .extract()
             .response()
@@ -272,7 +272,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
         // and it has the updated values
         given()
             .`when`()
-            .get("/api/ratings/user/$createdUserId")
+            .get("$RATINGS_ENDPOINT/user/$createdUserId")
             .then()
             .statusCode(200)
             .body("$", hasSize<Any>(1)) // Should still be only 1 rating
@@ -356,7 +356,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(rating1Request)
             .`when`()
-            .post("/api/ratings")
+            .post(RATINGS_ENDPOINT)
             .then()
             .statusCode(HttpStatus.CREATED.value())
 
@@ -371,7 +371,7 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .body(rating2Request)
             .`when`()
-            .post("/api/ratings")
+            .post(RATINGS_ENDPOINT)
             .then()
             .statusCode(HttpStatus.CREATED.value())
 
@@ -379,9 +379,9 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
         // This represents the user profile functionality where users can view their rated movies
         val profileResponse = given()
             .`when`()
-            .get("/api/ratings/user/$userId")
+            .get("$RATINGS_ENDPOINT/user/$userId")
             .then()
-            .statusCode(200)
+            .statusCode(HttpStatus.OK.value())
             .extract()
             .response()
 
