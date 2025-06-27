@@ -17,4 +17,9 @@ data class CreateUserRequestDto(
     @field:Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters")
     val fullName: String
 ) {
+    fun toCleanRequest(): CreateUserRequestDto = CreateUserRequestDto(
+        email = email.trim(),
+        username = username.trim(),
+        fullName = fullName.trim()
+    )
 }
