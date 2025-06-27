@@ -1,6 +1,6 @@
 package com.movie.rate.domain.repositories;
 
-import com.movie.rate.application.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.domain.entities.Movie
 
 data class PageRequest(

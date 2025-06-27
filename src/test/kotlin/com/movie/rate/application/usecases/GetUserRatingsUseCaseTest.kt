@@ -1,9 +1,9 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.application.domain.valueobjects.Email
-import com.movie.rate.application.domain.valueobjects.MovieId
-import com.movie.rate.application.domain.valueobjects.RatingValue
-import com.movie.rate.application.domain.valueobjects.UserId
+import com.movie.rate.domain.valueobjects.Email
+import com.movie.rate.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.RatingValue
+import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.domain.entities.Rating
 import com.movie.rate.domain.entities.User
 import com.movie.rate.domain.exception.UserNotFoundException

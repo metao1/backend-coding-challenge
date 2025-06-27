@@ -1,6 +1,6 @@
 package com.movie.rate.domain.entities
 
-import com.movie.rate.application.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.MovieId
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate

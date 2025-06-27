@@ -1,6 +1,6 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.application.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.application.dto.MovieResponse
 import com.movie.rate.domain.exception.MovieNotFoundException
 

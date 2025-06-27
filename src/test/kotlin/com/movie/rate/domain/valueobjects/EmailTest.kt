@@ -1,6 +1,5 @@
 package com.movie.rate.domain.valueobjects
 
-import com.movie.rate.application.domain.valueobjects.Email
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

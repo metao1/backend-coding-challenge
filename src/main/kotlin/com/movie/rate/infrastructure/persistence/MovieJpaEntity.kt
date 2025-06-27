@@ -1,6 +1,6 @@
 package com.movie.rate.infrastructure.persistence
 
-import com.movie.rate.application.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.domain.entities.Movie
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

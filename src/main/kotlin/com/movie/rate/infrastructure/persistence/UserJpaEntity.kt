@@ -1,7 +1,7 @@
 package com.movie.rate.infrastructure.persistence
 
-import com.movie.rate.application.domain.valueobjects.Email
-import com.movie.rate.application.domain.valueobjects.UserId
+import com.movie.rate.domain.valueobjects.Email
+import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.domain.entities.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

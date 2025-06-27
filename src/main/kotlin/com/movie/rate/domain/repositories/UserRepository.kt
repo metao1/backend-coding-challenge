@@ -1,7 +1,7 @@
 package com.movie.rate.domain.repositories
 
-import com.movie.rate.application.domain.valueobjects.Email
-import com.movie.rate.application.domain.valueobjects.UserId
+import com.movie.rate.domain.valueobjects.Email
+import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.domain.entities.User
 
 interface UserRepository {
