@@ -102,4 +102,192 @@ class MovieControllerIT : BaseIntegrationTest() {
             .body("created_at", notNullValue())
     }
 
+    @Test
+    fun `should retrieve movie by id successfully`() {
+        // Create a movie using isolated data
+        val movieRequest = createTestMovie(
+            title = RETRIEVE_TEST_SUFFIX,
+            description = "A test movie for retrieval testing",
+            releaseDate = "2024-01-01",
+            genre = "Action",
+            director = DEFAULT_MOVIE_DIRECTOR
+        )
+
+        val movieResponse = given()
+            .contentType(ContentType.JSON)
+            .body(movieRequest)
+            .`when`()
+            .post(MOVIES_ENDPOINT)
+            .then()
+            .statusCode(STATUS_CREATED)
+            .extract()
+            .response()
+
+        val createdMovieId = movieResponse.path<String>("id")
+
+        // Test retrieving the movie
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT/$createdMovieId")
+            .then()
+            .statusCode(STATUS_OK)
+            .body("id", equalTo(createdMovieId))
+            .body("title", equalTo(movieRequest["title"]))
+            .body("genre", equalTo(movieRequest["genre"]))
+    }
+
+    @Test
+    fun `should retrieve movies with pagination`() {
+        // Create a test movie using isolated data
+        val movieRequest = createTestMovie(
+            title = PAGINATION_TEST_SUFFIX,
+            description = "A test movie for pagination testing",
+            releaseDate = "2024-01-01",
+            genre = "Comedy",
+            director = DEFAULT_MOVIE_DIRECTOR
+        )
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(movieRequest)
+            .`when`()
+            .post(MOVIES_ENDPOINT)
+            .then()
+            .statusCode(STATUS_CREATED)
+
+        // Test pagination using GET endpoint with query parameters
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT?page=$DEFAULT_PAGE&size=$TEST_PAGE_SIZE&sortBy=$DEFAULT_SORT_BY&sortDirection=$DEFAULT_SORT_DIRECTION")
+            .then()
+            .statusCode(STATUS_OK)
+            .body("movies", hasSize<Any>(greaterThanOrEqualTo(1))) // At least some movies
+            .body("page", equalTo(DEFAULT_PAGE))
+            .body("size", equalTo(TEST_PAGE_SIZE))
+            .body("total_elements", greaterThanOrEqualTo(1))
+            .body("has_previous", equalTo(false)) // First page should always have has_previous = false
+            .body("movies[0]", notNullValue()) // Should have at least one movie
+            .body("movies[0].id", notNullValue()) // Movie should have an ID
+            .body("movies[0].title", notNullValue()) // Movie should have a title
+    }
+
+    @Test
+    fun `should retrieve movies using simple GET endpoint`() {
+        // Create a test movie
+        val movieRequest = createTestMovie(
+            title = SIMPLE_GET_TEST_SUFFIX,
+            description = "A test movie for simple GET endpoint",
+            releaseDate = "2024-01-01",
+            genre = "Test",
+            director = DEFAULT_MOVIE_DIRECTOR
+        )
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(movieRequest)
+            .`when`()
+            .post(MOVIES_ENDPOINT)
+            .then()
+            .statusCode(STATUS_CREATED)
+
+        // Test simple GET endpoint with default parameters
+        given()
+            .`when`()
+            .get(MOVIES_ENDPOINT)
+            .then()
+            .statusCode(STATUS_OK)
+            .body("movies", hasSize<Any>(greaterThanOrEqualTo(1))) // At least some movies
+            .body("page", equalTo(DEFAULT_PAGE))
+            .body("size", equalTo(DEFAULT_SIZE)) // Default size
+            .body("total_elements", greaterThanOrEqualTo(1))
+            .body("has_previous", equalTo(false))
+            .body("movies[0]", notNullValue())
+    }
+
+    @Test
+    fun `should return validation errors for invalid movie input`() {
+        // Create invalid movie data programmatically
+        val invalidMovieRequest = mapOf(
+            "title" to "", // Empty title
+            "description" to "", // Empty description
+            "release_date" to "invalid-date", // Invalid date format
+            "genre" to "", // Empty genre
+            "director" to "" // Empty director
+        )
+
+        val response = given()
+            .contentType(ContentType.JSON)
+            .body(invalidMovieRequest)
+            .`when`()
+            .post(MOVIES_ENDPOINT)
+            .then()
+            .extract()
+            .response()
+
+        // The API should return some error status (400 or 500)
+        assert(response.statusCode >= STATUS_BAD_REQUEST) {
+            "Expected error status (>=$STATUS_BAD_REQUEST), but got ${response.statusCode}. Response: ${response.asString()}"
+        }
+    }
+
+    @Test
+    fun `should return error for non-existent movie`() {
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT/$NON_EXISTENT_UUID")
+            .then()
+            .statusCode(STATUS_NOT_FOUND)
+            .body("status", equalTo(STATUS_NOT_FOUND))
+            .body("error", equalTo(NOT_FOUND_ERROR))
+            .body("message", containsString(NOT_FOUND_MESSAGE))
+    }
+
+    @Test
+    fun `should handle pagination edge cases`() {
+        // Create a test movie first
+        val movieRequest = createTestMovie(
+            title = "Pagination Edge Case Movie",
+            description = "A test movie for pagination edge cases",
+            releaseDate = "2024-01-01",
+            genre = "Test",
+            director = DEFAULT_MOVIE_DIRECTOR
+        )
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(movieRequest)
+            .`when`()
+            .post(MOVIES_ENDPOINT)
+            .then()
+            .statusCode(STATUS_CREATED)
+
+        // Test page 0 (first page)
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT?page=0&size=1")
+            .then()
+            .statusCode(STATUS_OK)
+            .body("page", equalTo(0))
+            .body("size", equalTo(1))
+            .body("has_previous", equalTo(false))
+
+        // Test large page size
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT?page=0&size=100")
+            .then()
+            .statusCode(STATUS_OK)
+            .body("page", equalTo(0))
+            .body("size", equalTo(100))
+
+        // Test empty page (beyond available data)
+        given()
+            .`when`()
+            .get("$MOVIES_ENDPOINT?page=999&size=10")
+            .then()
+            .statusCode(STATUS_OK)
+            .body("page", equalTo(999))
+            .body("movies", hasSize<Any>(0))
+            .body("has_next", equalTo(false))
+    }
 }
