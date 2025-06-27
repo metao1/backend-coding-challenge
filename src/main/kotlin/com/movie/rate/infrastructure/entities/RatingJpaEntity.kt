@@ -1,4 +1,4 @@
-package com.movie.rate.infrastructure.persistence
+package com.movie.rate.infrastructure.entities
 
 import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.domain.valueobjects.RatingValue
