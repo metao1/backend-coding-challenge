@@ -1,8 +1,8 @@
 package com.movie.rate.application.usecases
 
 import com.movie.rate.application.domain.valueobjects.MovieId
-import com.movie.rate.domain.Exceptions
 import com.movie.rate.domain.entities.Movie
+import com.movie.rate.domain.exception.DomainExceptions.MovieNotFoundException
 import com.movie.rate.domain.repositories.MovieRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -60,7 +60,7 @@ class GetMovieUseCaseTest {
         every { movieRepository.findById(movieId) } returns null
 
         // When & Then
-        val exception = assertThrows<Exceptions.MovieNotFoundException> {
+        val exception = assertThrows<MovieNotFoundException> {
             getMovieUseCase.execute(movieIdString)
         }
 
