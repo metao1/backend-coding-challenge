@@ -20,16 +20,6 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    // Exclude JUnit 4 completely from all test configurations
-    testImplementation {
-        exclude(group = "junit", module = "junit")
-    }
-    testRuntimeOnly {
-        exclude(group = "junit", module = "junit")
-    }
-}
-
 dependencies {
     // Spring Boot starters
     implementation("org.springframework.boot:spring-boot-starter-web")
