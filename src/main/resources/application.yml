@@ -1,0 +1,89 @@
+spring:
+  application:
+    name: movie-rating-system
+
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:moviedb} # //TODO Use PostgreSQL in production
+    username: ${DB_USERNAME:movieuser}
+    password: ${DB_PASSWORD:moviepass}
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # //TODO Use Flyway/Liquibase for migrations in production turn this into none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect # //TODO Use PostgreSQLDialect in production
+        jdbc:
+          batch_size: 20
+          order_inserts: true
+          order_updates: true
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        connection:
+          autocommit: false
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+    open-in-view: false
+
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: NON_NULL
+
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json
+  http2:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+# Development logging configuration
+logging:
+  level:
+    root: WARN
+    com.movierating: INFO
+    com.movierating.infrastructure.configuration: INFO
+    com.movierating.application: INFO
+    com.movierating.domain: INFO
+    com.movierating.presentation: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.hibernate: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.springframework.cache: WARN
+    org.springframework.transaction: WARN
+    org.testcontainers: OFF
+    com.zaxxer.hikari: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
+      total-size-cap: 3GB
