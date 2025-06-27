@@ -1,6 +1,6 @@
-package com.movie.app.domain.entities
+package com.movie.rate.domain.entities
 
-import com.movie.app.application.domain.valueobjects.MovieId
+import com.movie.rate.application.domain.valueobjects.MovieId
 import java.time.LocalDate
 import java.time.LocalDateTime
 

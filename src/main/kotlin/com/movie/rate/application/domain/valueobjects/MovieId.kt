@@ -1,4 +1,4 @@
-package com.movie.app.application.domain.valueobjects
+package com.movie.rate.application.domain.valueobjects
 
 import java.util.UUID
 
