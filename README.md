@@ -1,3 +1,5 @@
+[![Java CI with Gradle](https://github.com/metao1/microservice-online-store/actions/workflows/gradle.yml/badge.svg)](https://github.com/metao1/backend-coding-challenge/actions/workflows/quality-checks.yml)
+
 # Backend Senior Coding Challenge 🍿
 
 Welcome to our Movie Rating System Coding Challenge! We appreciate you taking
