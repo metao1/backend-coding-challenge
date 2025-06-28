@@ -27,7 +27,6 @@ class UserNotFoundException(
     cause: Throwable? = null,
 ) : ResourceNotFoundException("User with identifier '$identifier' not found", cause)
 
-
 /**
  * Exception thrown when a concurrency conflict occurs during data modification.
  * This typically happens when multiple instances try to modify the same entity simultaneously.
