@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.Version
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -36,6 +37,9 @@ class RatingJpaEntity(
     val createdAt: LocalDateTime,
     @Column(name = "updated_at")
     var updatedAt: LocalDateTime?,
+    @Version
+    @Column(name = "version")
+    val version: Long = 0,
 ) {
     companion object {
         fun fromDomain(rating: Rating): RatingJpaEntity =
@@ -46,6 +50,7 @@ class RatingJpaEntity(
                 comment = rating.comment,
                 createdAt = rating.createdAt,
                 updatedAt = rating.updatedAt,
+                version = 0, // New entities start with version 0
             )
     }
 
