@@ -79,16 +79,22 @@ tasks.named("check") {
     dependsOn("compileKotlin", "compileTestKotlin")
 }
 
+// ktlint configuration
+ktlint {
+    filter {
+        exclude("**/generated/**")
+    }
+}
+
 // Kotlin compiler options for better code quality
 tasks.withType<KotlinCompile> {
     compilerOptions {
         freeCompilerArgs.addAll(
             "-Xjsr305=strict",
-            // "-Xexplicit-api=warning",  // Enable for stricter API visibility checks
-            "-opt-in=kotlin.RequiresOptIn"
+            "-opt-in=kotlin.RequiresOptIn",
         )
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        allWarningsAsErrors.set(false)  // Set to true for stricter builds
+        allWarningsAsErrors.set(false) // Set to true for stricter builds
     }
 }
 
