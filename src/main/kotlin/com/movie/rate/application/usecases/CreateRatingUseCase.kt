@@ -46,7 +46,7 @@ class CreateRatingUseCase(
         return try {
             val existingRating = ratingRepository.findByUserIdAndMovieId(userId, movieId)
             if (existingRating != null) {
-                // Update existing rating
+                // Update existing rating (naturally idempotent)
                 existingRating.updateRating(RatingValue.of(request.value), request.comment)
                 val updatedRating = ratingRepository.save(existingRating)
                 RatingResponse.fromDomain(updatedRating)
@@ -64,8 +64,14 @@ class CreateRatingUseCase(
                 RatingResponse.fromDomain(savedRating)
             }
         } catch (ex: DataIntegrityViolationException) {
-            // Handle unique constraint violation (duplicate rating)
-            throw DuplicateRatingException(request.userId, request.movieId, ex)
+            // Handle race condition: another thread created the rating
+            // Fetch and update it (maintains idempotency)
+            val existingRating = ratingRepository.findByUserIdAndMovieId(userId, movieId)
+                ?: throw DuplicateRatingException(request.userId, request.movieId, ex)
+
+            existingRating.updateRating(RatingValue.of(request.value), request.comment)
+            val updatedRating = ratingRepository.save(existingRating)
+            RatingResponse.fromDomain(updatedRating)
         } catch (ex: OptimisticLockException) {
             // Handle optimistic locking failure
             throw ConcurrencyException("Rating was modified by another process. Please retry.", ex)
