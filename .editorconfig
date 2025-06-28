@@ -1,2 +1,16 @@
 [*]
 insert_final_newline = true
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+# Kotlin specific settings
+indent_size = 4
+continuation_indent_size = 4
+
+# ktlint rules configuration - disable chain wrapping to allow single-line Optional expressions
+ktlint_chain-wrapping = disabled
+ktlint_multiline-expression-wrapping = disabled
