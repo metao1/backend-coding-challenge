@@ -46,6 +46,10 @@ dependencies {
     // Caching
     implementation("org.springframework.boot:spring-boot-starter-cache")
 
+    // Retry mechanism for concurrency handling
+    implementation("org.springframework.retry:spring-retry")
+    implementation("org.springframework:spring-aspects")
+
     // API Documentation
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion")
 

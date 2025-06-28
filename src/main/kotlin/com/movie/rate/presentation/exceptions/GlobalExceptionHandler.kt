@@ -1,6 +1,8 @@
 package com.movie.rate.presentation.exceptions
 
 import com.movie.rate.domain.exception.ResourceNotFoundException
+import com.movie.rate.domain.exceptions.ConcurrencyException
+import com.movie.rate.domain.exceptions.DuplicateRatingException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -63,6 +65,42 @@ class GlobalExceptionHandler {
                 errors = errors,
             )
         return ResponseEntity.badRequest().body(errorResponse)
+    }
+
+    @ExceptionHandler(ConcurrencyException::class)
+    fun handleConcurrencyException(ex: ConcurrencyException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.CONFLICT.value(),
+            error = "Concurrency Error",
+            message = ex.message ?: "A concurrency error occurred.",
+            path = null,
+        )
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse)
+    }
+
+    @ExceptionHandler(DuplicateRatingException::class)
+    fun handleDuplicateRatingException(ex: DuplicateRatingException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.CONFLICT.value(),
+            error = "Duplicate Rating",
+            message = ex.message ?: "A duplicate rating was attempted.",
+            path = null,
+        )
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleGenericException(ex: Exception): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            error = "Internal Server Error",
+            message = "An unexpected error occurred",
+            path = null
+        )
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse)
     }
 
     data class ErrorResponse(
