@@ -3,10 +3,10 @@ package com.movie.rate.application.usecases
 import com.movie.rate.application.dto.CreateRatingRequest
 import com.movie.rate.application.dto.RatingResponse
 import com.movie.rate.domain.entities.Rating
+import com.movie.rate.domain.exception.ConcurrencyException
+import com.movie.rate.domain.exception.DuplicateRatingException
 import com.movie.rate.domain.exception.MovieNotFoundException
 import com.movie.rate.domain.exception.UserNotFoundException
-import com.movie.rate.domain.exceptions.ConcurrencyException
-import com.movie.rate.domain.exceptions.DuplicateRatingException
 import com.movie.rate.domain.repositories.MovieRepository
 import com.movie.rate.domain.repositories.RatingRepository
 import com.movie.rate.domain.repositories.UserRepository
