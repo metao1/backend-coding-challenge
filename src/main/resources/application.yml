@@ -65,11 +65,7 @@ springdoc:
 logging:
   level:
     root: WARN
-    com.movierating: INFO
-    com.movierating.infrastructure.configuration: INFO
-    com.movierating.application: INFO
-    com.movierating.domain: INFO
-    com.movierating.presentation: INFO
+    com.movie.rate: INFO
     org.springframework.web: WARN
     org.springframework.security: WARN
     org.hibernate: WARN
