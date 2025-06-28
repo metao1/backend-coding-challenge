@@ -1,8 +1,8 @@
 package com.movie.rate.presentation.exceptions
 
+import com.movie.rate.domain.exception.ConcurrencyException
+import com.movie.rate.domain.exception.DuplicateRatingException
 import com.movie.rate.domain.exception.ResourceNotFoundException
-import com.movie.rate.domain.exceptions.ConcurrencyException
-import com.movie.rate.domain.exceptions.DuplicateRatingException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
