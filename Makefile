@@ -9,10 +9,10 @@ lint:
 	@echo "✅ Kotlin compilation successful - no syntax errors!"
 .PHONY: lint
 
-# Check code formatting (using .editorconfig)
+# Check code formatting with ktlint
 format-check:
 	@echo "🔍 Checking code formatting..."
-	@echo "✅ Code formatting follows .editorconfig rules"
+	./gradlew ktlintCheck
 .PHONY: format-check
 
 # Run tests
