@@ -13,9 +13,8 @@ import java.util.Optional
 
 @Repository
 class UserRepositoryImpl(
-    private val userJpaRepository: UserJpaRepository
+    private val userJpaRepository: UserJpaRepository,
 ) : UserRepository {
-
     @CacheEvict(value = ["users"], allEntries = true)
     override fun save(user: User): User {
         val jpaEntity = UserJpaEntity.fromDomain(user)
@@ -25,16 +24,12 @@ class UserRepositoryImpl(
 
     @Cacheable("users")
     override fun findById(id: UserId): User? =
-        Optional.ofNullable(userJpaRepository.findByUuid(id.value))
+        Optional
+            .ofNullable(userJpaRepository.findByUuid(id.value))
             .map { it.toDomain() }
             .orElse(null)
 
+    override fun existsByEmail(email: Email): Boolean = userJpaRepository.existsByEmail(email.value)
 
-    override fun existsByEmail(email: Email): Boolean =
-        userJpaRepository.existsByEmail(email.value)
-
-    override fun existsByUsername(username: String): Boolean =
-        userJpaRepository.existsByUsername(username)
-
-
+    override fun existsByUsername(username: String): Boolean = userJpaRepository.existsByUsername(username)
 }

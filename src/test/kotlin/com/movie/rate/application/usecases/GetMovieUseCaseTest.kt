@@ -1,9 +1,9 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.domain.entities.Movie
 import com.movie.rate.domain.exception.MovieNotFoundException
 import com.movie.rate.domain.repositories.MovieRepository
+import com.movie.rate.domain.valueobjects.MovieId
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -15,7 +15,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class GetMovieUseCaseTest {
-
     private val movieRepository = mockk<MovieRepository>()
     private val getMovieUseCase = GetMovieUseCase(movieRepository)
 
@@ -24,16 +23,17 @@ class GetMovieUseCaseTest {
         // Given
         val movieId = MovieId.generate()
         val movieIdString = movieId.toString()
-        val movie = Movie.fromPersistence(
-            id = movieId,
-            title = "The Matrix",
-            description = "A computer hacker learns from mysterious rebels about the true nature of his reality.",
-            releaseDate = LocalDate.of(1999, 3, 31),
-            genre = "Science Fiction",
-            director = "The Wachowskis",
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val movie =
+            Movie.fromPersistence(
+                id = movieId,
+                title = "The Matrix",
+                description = "A computer hacker learns from mysterious rebels about the true nature of his reality.",
+                releaseDate = LocalDate.of(1999, 3, 31),
+                genre = "Science Fiction",
+                director = "The Wachowskis",
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
         every { movieRepository.findById(movieId) } returns movie
 
@@ -60,9 +60,10 @@ class GetMovieUseCaseTest {
         every { movieRepository.findById(movieId) } returns null
 
         // When & Then
-        val exception = assertThrows<MovieNotFoundException> {
-            getMovieUseCase.execute(movieIdString)
-        }
+        val exception =
+            assertThrows<MovieNotFoundException> {
+                getMovieUseCase.execute(movieIdString)
+            }
 
         assertEquals("Movie with identifier '$movieIdString' not found", exception.message)
         verify { movieRepository.findById(movieId) }
@@ -84,16 +85,17 @@ class GetMovieUseCaseTest {
         // Given
         val movieId = MovieId.generate()
         val movieIdString = movieId.toString()
-        val movie = Movie.fromPersistence(
-            id = movieId,
-            title = "Inception",
-            description = "A thief who steals corporate secrets through dream-sharing technology.",
-            releaseDate = LocalDate.of(2010, 7, 16),
-            genre = "Action",
-            director = "Christopher Nolan",
-            createdAt = LocalDateTime.now().minusDays(1),
-            updatedAt = LocalDateTime.now()
-        )
+        val movie =
+            Movie.fromPersistence(
+                id = movieId,
+                title = "Inception",
+                description = "A thief who steals corporate secrets through dream-sharing technology.",
+                releaseDate = LocalDate.of(2010, 7, 16),
+                genre = "Action",
+                director = "Christopher Nolan",
+                createdAt = LocalDateTime.now().minusDays(1),
+                updatedAt = LocalDateTime.now(),
+            )
 
         every { movieRepository.findById(movieId) } returns movie
 

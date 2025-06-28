@@ -1,14 +1,14 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.domain.valueobjects.Email
-import com.movie.rate.domain.valueobjects.MovieId
-import com.movie.rate.domain.valueobjects.RatingValue
-import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.domain.entities.Rating
 import com.movie.rate.domain.entities.User
 import com.movie.rate.domain.exception.UserNotFoundException
 import com.movie.rate.domain.repositories.RatingRepository
 import com.movie.rate.domain.repositories.UserRepository
+import com.movie.rate.domain.valueobjects.Email
+import com.movie.rate.domain.valueobjects.MovieId
+import com.movie.rate.domain.valueobjects.RatingValue
+import com.movie.rate.domain.valueobjects.UserId
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -19,7 +19,6 @@ import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
 
 class GetUserRatingsUseCaseTest {
-
     private val ratingRepository = mockk<RatingRepository>()
     private val userRepository = mockk<UserRepository>()
     private val getUserRatingsUseCase = GetUserRatingsUseCase(ratingRepository, userRepository)
@@ -32,32 +31,35 @@ class GetUserRatingsUseCaseTest {
         val movieId1 = MovieId.generate()
         val movieId2 = MovieId.generate()
 
-        val user = User.fromPersistence(
-            id = userId,
-            email = Email("john.doe@example.com"),
-            username = "johndoe",
-            fullName = "John Doe",
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val user =
+            User.fromPersistence(
+                id = userId,
+                email = Email("john.doe@example.com"),
+                username = "johndoe",
+                fullName = "John Doe",
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
-        val rating1 = Rating.fromPersistence(
-            userId = userId,
-            movieId = movieId1,
-            value = RatingValue.of(5),
-            comment = "Excellent movie!",
-            createdAt = LocalDateTime.now().minusDays(2),
-            updatedAt = null
-        )
+        val rating1 =
+            Rating.fromPersistence(
+                userId = userId,
+                movieId = movieId1,
+                value = RatingValue.of(5),
+                comment = "Excellent movie!",
+                createdAt = LocalDateTime.now().minusDays(2),
+                updatedAt = null,
+            )
 
-        val rating2 = Rating.fromPersistence(
-            userId = userId,
-            movieId = movieId2,
-            value = RatingValue.of(4),
-            comment = "Very good!",
-            createdAt = LocalDateTime.now().minusDays(1),
-            updatedAt = null
-        )
+        val rating2 =
+            Rating.fromPersistence(
+                userId = userId,
+                movieId = movieId2,
+                value = RatingValue.of(4),
+                comment = "Very good!",
+                createdAt = LocalDateTime.now().minusDays(1),
+                updatedAt = null,
+            )
 
         val ratings = listOf(rating1, rating2)
 
@@ -88,14 +90,15 @@ class GetUserRatingsUseCaseTest {
         val userId = UserId.generate()
         val userIdString = userId.toString()
 
-        val user = User.fromPersistence(
-            id = userId,
-            email = Email("john.doe@example.com"),
-            username = "johndoe",
-            fullName = "John Doe",
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val user =
+            User.fromPersistence(
+                id = userId,
+                email = Email("john.doe@example.com"),
+                username = "johndoe",
+                fullName = "John Doe",
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
         every { userRepository.findById(userId) } returns user
         every { ratingRepository.findByUserId(userId) } returns emptyList()
@@ -119,9 +122,10 @@ class GetUserRatingsUseCaseTest {
         every { userRepository.findById(userId) } returns null
 
         // When & Then
-        val exception = assertThrows<UserNotFoundException> {
-            getUserRatingsUseCase.execute(userIdString)
-        }
+        val exception =
+            assertThrows<UserNotFoundException> {
+                getUserRatingsUseCase.execute(userIdString)
+            }
 
         assertEquals("User with identifier '$userIdString' not found", exception.message)
         verify { userRepository.findById(userId) }
@@ -146,23 +150,25 @@ class GetUserRatingsUseCaseTest {
         val userIdString = userId.toString()
         val movieId = MovieId.generate()
 
-        val user = User.fromPersistence(
-            id = userId,
-            email = Email("jane.smith@example.com"),
-            username = "janesmith",
-            fullName = "Jane Smith",
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val user =
+            User.fromPersistence(
+                id = userId,
+                email = Email("jane.smith@example.com"),
+                username = "janesmith",
+                fullName = "Jane Smith",
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
-        val rating = Rating.fromPersistence(
-            userId = userId,
-            movieId = movieId,
-            value = RatingValue.of(3),
-            comment = null,
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val rating =
+            Rating.fromPersistence(
+                userId = userId,
+                movieId = movieId,
+                value = RatingValue.of(3),
+                comment = null,
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
         every { userRepository.findById(userId) } returns user
         every { ratingRepository.findByUserId(userId) } returns listOf(rating)
@@ -188,23 +194,25 @@ class GetUserRatingsUseCaseTest {
         val userIdString = userId.toString()
         val movieId = MovieId.generate()
 
-        val user = User.fromPersistence(
-            id = userId,
-            email = Email("bob.wilson@example.com"),
-            username = "bobwilson",
-            fullName = "Bob Wilson",
-            createdAt = LocalDateTime.now(),
-            updatedAt = null
-        )
+        val user =
+            User.fromPersistence(
+                id = userId,
+                email = Email("bob.wilson@example.com"),
+                username = "bobwilson",
+                fullName = "Bob Wilson",
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+            )
 
-        val rating = Rating.fromPersistence(
-            userId = userId,
-            movieId = movieId,
-            value = RatingValue.of(4),
-            comment = "Updated rating",
-            createdAt = LocalDateTime.now().minusDays(3),
-            updatedAt = LocalDateTime.now().minusDays(1)
-        )
+        val rating =
+            Rating.fromPersistence(
+                userId = userId,
+                movieId = movieId,
+                value = RatingValue.of(4),
+                comment = "Updated rating",
+                createdAt = LocalDateTime.now().minusDays(3),
+                updatedAt = LocalDateTime.now().minusDays(1),
+            )
 
         every { userRepository.findById(userId) } returns user
         every { ratingRepository.findByUserId(userId) } returns listOf(rating)

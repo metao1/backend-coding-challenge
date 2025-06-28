@@ -9,16 +9,16 @@ import org.junit.jupiter.api.assertThrows
  * Tests email validation and boundary conditions.
  */
 class EmailTest {
-
     @Test
     fun `should create email with valid format`() {
-        val validEmails = listOf(
-            "user@example.com",
-            "test.email@domain.org",
-            "user+tag@example.co.uk",
-            "firstname.lastname@company.com",
-            "user123@test-domain.com"
-        )
+        val validEmails =
+            listOf(
+                "user@example.com",
+                "test.email@domain.org",
+                "user+tag@example.co.uk",
+                "firstname.lastname@company.com",
+                "user123@test-domain.com",
+            )
 
         validEmails.forEach { emailString ->
             val email = Email(emailString)
@@ -28,18 +28,19 @@ class EmailTest {
 
     @Test
     fun `should throw exception for invalid email format`() {
-        val invalidEmails = listOf(
-            "",                    // Empty string
-            "   ",                 // Blank string
-            "invalid",             // No @ symbol
-            "@domain.com",         // Missing local part
-            "user@",               // Missing domain
-            "user@domain",         // Missing TLD
-            "user name@domain.com", // Space in local part
-            "user@domain .com",    // Space in domain
-            "user@@domain.com",    // Double @
-            "user@domain@com"      // Multiple @
-        )
+        val invalidEmails =
+            listOf(
+                "", // Empty string
+                "   ", // Blank string
+                "invalid", // No @ symbol
+                "@domain.com", // Missing local part
+                "user@", // Missing domain
+                "user@domain", // Missing TLD
+                "user name@domain.com", // Space in local part
+                "user@domain .com", // Space in domain
+                "user@@domain.com", // Double @
+                "user@domain@com", // Multiple @
+            )
 
         invalidEmails.forEach { invalidEmail ->
             assertThrows<IllegalStateException>("Should fail for: $invalidEmail") {
@@ -80,11 +81,12 @@ class EmailTest {
 
     @Test
     fun `should handle international domain names`() {
-        val validInternationalEmails = listOf(
-            "user@example.co.uk",
-            "test@domain.org",
-            "email@sub.domain.com"
-        )
+        val validInternationalEmails =
+            listOf(
+                "user@example.co.uk",
+                "test@domain.org",
+                "email@sub.domain.com",
+            )
 
         validInternationalEmails.forEach { emailString ->
             val email = Email(emailString)
@@ -94,16 +96,17 @@ class EmailTest {
 
     @Test
     fun `should reject emails with invalid characters`() {
-        val invalidCharacterEmails = listOf(
-            "user<>@domain.com",
-            "user[]@domain.com",
-            "user{}@domain.com",
-            "user()@domain.com",
-            "user;@domain.com",
-            "user:@domain.com",
-            "user,@domain.com",
-            "user@domain@com"
-        )
+        val invalidCharacterEmails =
+            listOf(
+                "user<>@domain.com",
+                "user[]@domain.com",
+                "user{}@domain.com",
+                "user()@domain.com",
+                "user;@domain.com",
+                "user:@domain.com",
+                "user,@domain.com",
+                "user@domain@com",
+            )
 
         invalidCharacterEmails.forEach { invalidEmail ->
             assertThrows<IllegalStateException>("Should fail for: $invalidEmail") {

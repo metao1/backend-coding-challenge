@@ -7,5 +7,5 @@ data class PagedMoviesResponse(
     val totalElements: Long,
     val totalPages: Int,
     val hasNext: Boolean,
-    val hasPrevious: Boolean
+    val hasPrevious: Boolean,
 )

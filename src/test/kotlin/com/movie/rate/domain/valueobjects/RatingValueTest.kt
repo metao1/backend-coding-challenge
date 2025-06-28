@@ -13,7 +13,6 @@ import org.junit.jupiter.params.provider.CsvSource
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RatingValueTest {
-
     @Test
     fun `should create rating value with valid values`() {
         // Test all valid rating values (1-5)
@@ -26,14 +25,18 @@ class RatingValueTest {
     @ParameterizedTest
     @CsvSource(
         "MIN_RATING, 1",
-        "MAX_RATING, 5"
+        "MAX_RATING, 5",
     )
-    fun `should have correct constants`(constant: String, expected: Int) {
-        val actual = when (constant) {
-            "MIN_RATING" -> RatingValue.MIN_RATING
-            "MAX_RATING" -> RatingValue.MAX_RATING
-            else -> throw IllegalArgumentException("Unknown constant")
-        }
+    fun `should have correct constants`(
+        constant: String,
+        expected: Int,
+    ) {
+        val actual =
+            when (constant) {
+                "MIN_RATING" -> RatingValue.MIN_RATING
+                "MAX_RATING" -> RatingValue.MAX_RATING
+                else -> throw IllegalArgumentException("Unknown constant")
+            }
         assertEquals(expected, actual)
     }
 
@@ -42,12 +45,16 @@ class RatingValueTest {
         "0, Rating value must be between 1 and 5 but was 0",
         "6, Rating value must be between 1 and 5 but was 6",
         "-1, Rating value must be between 1 and 5 but was -1",
-        "100, Rating value must be between 1 and 5 but was 100"
+        "100, Rating value must be between 1 and 5 but was 100",
     )
-    fun `should throw exception for invalid rating values`(invalidValue: Int, expectedMessage: String) {
-        val exception = assertThrows<IllegalStateException> {
-            RatingValue.of(invalidValue)
-        }
+    fun `should throw exception for invalid rating values`(
+        invalidValue: Int,
+        expectedMessage: String,
+    ) {
+        val exception =
+            assertThrows<IllegalStateException> {
+                RatingValue.of(invalidValue)
+            }
         assertEquals(expectedMessage, exception.message)
     }
 

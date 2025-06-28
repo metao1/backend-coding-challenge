@@ -2,7 +2,11 @@ package com.movie.rate.domain.entities
 
 import com.movie.rate.domain.valueobjects.Email
 import com.movie.rate.domain.valueobjects.UserId
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 /**
@@ -10,7 +14,6 @@ import org.junit.jupiter.api.Test
  * Tests user creation and behavior without validation (handled at API layer).
  */
 class UserTest {
-
     @Test
     fun `should create user with valid data`() {
         // Given

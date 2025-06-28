@@ -13,12 +13,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.*
-import org.slf4j.LoggerFactory
-import kotlin.jvm.java
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/movies")
@@ -27,9 +32,8 @@ import kotlin.jvm.java
 class MovieController(
     private val createMovieUseCase: CreateMovieUseCase,
     private val getMovieUseCase: GetMovieUseCase,
-    private val getAllMoviesUseCase: GetAllMoviesUseCase
+    private val getAllMoviesUseCase: GetAllMoviesUseCase,
 ) {
-
     companion object {
         private val logger = LoggerFactory.getLogger(MovieController::class.java)
     }
@@ -39,12 +43,12 @@ class MovieController(
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Movie created successfully"),
-            ApiResponse(responseCode = "400", description = "Invalid input data")
-        ]
+            ApiResponse(responseCode = "400", description = "Invalid input data"),
+        ],
     )
     @Transactional
     fun createMovie(
-        @Valid @RequestBody request: CreateMovieRequestDto
+        @Valid @RequestBody request: CreateMovieRequestDto,
     ): ResponseEntity<MovieResponse> {
         logger.info("Creating movie with title: {}", request.title)
         val movieResponse = createMovieUseCase.execute(request.toApplicationDto())
@@ -58,12 +62,12 @@ class MovieController(
         value = [
             ApiResponse(responseCode = "200", description = "Movie found"),
             ApiResponse(responseCode = "404", description = "Movie not found"),
-            ApiResponse(responseCode = "400", description = "Invalid movie ID format")
-        ]
+            ApiResponse(responseCode = "400", description = "Invalid movie ID format"),
+        ],
     )
     fun getMovie(
         @Parameter(description = "Movie unique identifier", required = true)
-        @PathVariable movieId: String
+        @PathVariable movieId: String,
     ): ResponseEntity<MovieResponse> {
         logger.debug("Retrieving movie with ID: {}", movieId)
         val movieResponse = getMovieUseCase.execute(movieId)
@@ -75,11 +79,11 @@ class MovieController(
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Movies retrieved successfully"),
-            ApiResponse(responseCode = "400", description = "Invalid pagination parameters")
-        ]
+            ApiResponse(responseCode = "400", description = "Invalid pagination parameters"),
+        ],
     )
     fun getAllMovies(
-        @Valid @ModelAttribute pagination: PaginationRequestDto
+        @Valid @ModelAttribute pagination: PaginationRequestDto,
     ): ResponseEntity<PagedMoviesResponse> {
         logger.debug("Retrieving movies with pagination: page={}, size={}", pagination.page, pagination.size)
         val pageRequest = pagination.toDomainPageRequest()

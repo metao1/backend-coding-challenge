@@ -1,10 +1,10 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.application.dto.RatingResponse
 import com.movie.rate.domain.exception.UserNotFoundException
 import com.movie.rate.domain.repositories.RatingRepository
 import com.movie.rate.domain.repositories.UserRepository
+import com.movie.rate.domain.valueobjects.UserId
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class GetUserRatingsUseCase(
     private val ratingRepository: RatingRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     fun execute(userId: String): List<RatingResponse> {
         val id = UserId.fromString(userId)

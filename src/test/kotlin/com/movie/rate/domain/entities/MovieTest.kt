@@ -1,7 +1,11 @@
 package com.movie.rate.domain.entities
 
 import com.movie.rate.domain.valueobjects.MovieId
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.text.contains
@@ -11,7 +15,6 @@ import kotlin.text.contains
  * Tests movie creation and behavior without validation (handled at API layer).
  */
 class MovieTest {
-
     @Test
     fun `should create movie with valid data`() {
         // Given
@@ -39,14 +42,15 @@ class MovieTest {
     @Test
     fun `should update movie details`() {
         // Given
-        val movie = Movie.create(
-            MovieId.generate(),
-            "The Matrix",
-            "Original description",
-            LocalDate.of(1999, 3, 31),
-            "Science Fiction",
-            "The Wachowskis"
-        )
+        val movie =
+            Movie.create(
+                MovieId.generate(),
+                "The Matrix",
+                "Original description",
+                LocalDate.of(1999, 3, 31),
+                "Science Fiction",
+                "The Wachowskis",
+            )
         val newDescription = "Updated description about the Matrix"
 
         // When
@@ -76,14 +80,15 @@ class MovieTest {
     fun `should have meaningful toString`() {
         // Given
         val movieId = MovieId.generate()
-        val movie = Movie.create(
-            movieId,
-            "The Matrix",
-            "A computer hacker learns from mysterious rebels.",
-            LocalDate.of(1999, 3, 31),
-            "Science Fiction",
-            "The Wachowskis"
-        )
+        val movie =
+            Movie.create(
+                movieId,
+                "The Matrix",
+                "A computer hacker learns from mysterious rebels.",
+                LocalDate.of(1999, 3, 31),
+                "Science Fiction",
+                "The Wachowskis",
+            )
 
         // When
         val toString = movie.toString()

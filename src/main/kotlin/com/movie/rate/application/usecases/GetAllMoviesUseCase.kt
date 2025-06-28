@@ -6,12 +6,11 @@ import com.movie.rate.domain.repositories.MovieRepository
 import com.movie.rate.domain.repositories.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.collections.map
 
 @Service
 @Transactional(readOnly = true)
 class GetAllMoviesUseCase(
-    private val movieRepository: MovieRepository
+    private val movieRepository: MovieRepository,
 ) {
     fun execute(pageRequest: PageRequest): PagedMoviesResponse {
         val pageResult = movieRepository.findAll(pageRequest)
@@ -24,7 +23,7 @@ class GetAllMoviesUseCase(
             totalElements = pageResult.totalElements,
             totalPages = pageResult.totalPages,
             hasNext = pageResult.hasNext,
-            hasPrevious = pageResult.hasPrevious
+            hasPrevious = pageResult.hasPrevious,
         )
     }
 }

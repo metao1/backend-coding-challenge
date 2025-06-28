@@ -7,5 +7,5 @@ data class CreateMovieRequest(
     val description: String,
     val releaseDate: LocalDate,
     val genre: String,
-    val director: String
+    val director: String,
 )

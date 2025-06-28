@@ -11,7 +11,7 @@ data class User private constructor(
     val username: String,
     private var _fullName: String,
     private var _createdAt: LocalDateTime = LocalDateTime.now(),
-    private var _updatedAt: LocalDateTime? = null
+    private var _updatedAt: LocalDateTime? = null,
 ) {
     val fullName: String get() = _fullName
     val createdAt: LocalDateTime get() = _createdAt
@@ -22,7 +22,7 @@ data class User private constructor(
             id: UserId,
             email: Email,
             username: String,
-            fullName: String
+            fullName: String,
         ): User = User(id, email, username, fullName)
 
         fun fromPersistence(
@@ -31,15 +31,16 @@ data class User private constructor(
             username: String,
             fullName: String,
             createdAt: LocalDateTime,
-            updatedAt: LocalDateTime?
+            updatedAt: LocalDateTime?,
         ): User = User(id, email, username, fullName, createdAt, updatedAt)
     }
 
-    override fun equals(other: Any?): Boolean = when {
-        this === other -> true
-        other !is User -> false
-        else -> id == other.id
-    }
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> true
+            other !is User -> false
+            else -> id == other.id
+        }
 
     override fun hashCode(): Int = id.hashCode()
 

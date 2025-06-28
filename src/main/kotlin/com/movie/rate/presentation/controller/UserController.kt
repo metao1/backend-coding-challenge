@@ -4,7 +4,6 @@ import com.movie.rate.application.dto.CreateUserRequestDto
 import com.movie.rate.application.dto.UserResponse
 import com.movie.rate.application.usecases.CreateUserUseCase
 import com.movie.rate.application.usecases.GetUserUseCase
-
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -13,27 +12,31 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "Users", description = "User management operations")
 class UserController(
     private val createUserUseCase: CreateUserUseCase,
-    private val getUserUseCase: GetUserUseCase
+    private val getUserUseCase: GetUserUseCase,
 ) {
-
     @PostMapping
     @Operation(summary = "Create a new user", description = "Creates a new user with the provided information")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "User created successfully"),
             ApiResponse(responseCode = "400", description = "Invalid input data"),
-            ApiResponse(responseCode = "409", description = "User already exists")
-        ]
+            ApiResponse(responseCode = "409", description = "User already exists"),
+        ],
     )
     fun createUser(
-        @Valid @RequestBody request: CreateUserRequestDto
+        @Valid @RequestBody request: CreateUserRequestDto,
     ): ResponseEntity<UserResponse> {
         val cleanRequest = request.toCleanRequest()
         val userResponse = createUserUseCase.execute(cleanRequest)
@@ -46,12 +49,12 @@ class UserController(
         value = [
             ApiResponse(responseCode = "200", description = "User found"),
             ApiResponse(responseCode = "404", description = "User not found"),
-            ApiResponse(responseCode = "400", description = "Invalid user ID format")
-        ]
+            ApiResponse(responseCode = "400", description = "Invalid user ID format"),
+        ],
     )
     fun getUser(
         @Parameter(description = "User unique identifier", required = true)
-        @PathVariable userId: String
+        @PathVariable userId: String,
     ): ResponseEntity<UserResponse> {
         val userResponse = getUserUseCase.execute(userId)
         return ResponseEntity.ok(userResponse)

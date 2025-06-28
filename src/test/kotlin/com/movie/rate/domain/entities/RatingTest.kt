@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
 class RatingTest {
-
     @Test
     fun `should create rating with valid data`() {
         // Given
@@ -49,12 +48,13 @@ class RatingTest {
     @Test
     fun `should update rating value and comment`() {
         // Given
-        val rating = Rating.create(
-            UserId.generate(),
-            MovieId.generate(),
-            RatingValue.of(3),
-            "It was okay"
-        )
+        val rating =
+            Rating.create(
+                UserId.generate(),
+                MovieId.generate(),
+                RatingValue.of(3),
+                "It was okay",
+            )
         val newRatingValue = RatingValue.of(5)
         val newComment = "Actually, it was amazing on second viewing!"
 
@@ -70,12 +70,13 @@ class RatingTest {
     @Test
     fun `should update rating value without comment`() {
         // Given
-        val rating = Rating.create(
-            UserId.generate(),
-            MovieId.generate(),
-            RatingValue.of(3),
-            "It was okay"
-        )
+        val rating =
+            Rating.create(
+                UserId.generate(),
+                MovieId.generate(),
+                RatingValue.of(3),
+                "It was okay",
+            )
         val newRatingValue = RatingValue.of(4)
 
         // When

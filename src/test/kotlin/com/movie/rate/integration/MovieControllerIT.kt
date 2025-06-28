@@ -3,9 +3,15 @@ package com.movie.rate.integration
 import com.movie.rate.integration.Constants.Companion.MOVIES_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.containsString
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.greaterThanOrEqualTo
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.*
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_BAD_REQUEST
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_NOT_FOUND
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse.STATUS_OK
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 
@@ -19,9 +25,7 @@ import org.springframework.test.annotation.DirtiesContext
  */
 @DirtiesContext
 class MovieControllerIT : BaseIntegrationTest() {
-
     companion object {
-
         // Default Test Values
         private const val DEFAULT_MOVIE_TITLE = "Integration Test Movie"
         private const val DEFAULT_MOVIE_DESCRIPTION = "A comprehensive test movie for integration testing"
@@ -44,20 +48,18 @@ class MovieControllerIT : BaseIntegrationTest() {
         // Error Messages
         private const val NOT_FOUND_ERROR = "Not Found"
         private const val NOT_FOUND_MESSAGE = "not found"
-
-        // UUID Constants
-        private const val NON_EXISTENT_UUID = "00000000-0000-0000-0000-000000000000"
     }
 
     @Test
     fun `should create movie with valid data`() {
-        val movieRequest = createTestMovie(
-            title = DEFAULT_MOVIE_TITLE,
-            description = DEFAULT_MOVIE_DESCRIPTION,
-            releaseDate = DEFAULT_MOVIE_RELEASE_DATE,
-            genre = DEFAULT_MOVIE_GENRE,
-            director = DEFAULT_MOVIE_DIRECTOR
-        )
+        val movieRequest =
+            createTestMovie(
+                title = DEFAULT_MOVIE_TITLE,
+                description = DEFAULT_MOVIE_DESCRIPTION,
+                releaseDate = DEFAULT_MOVIE_RELEASE_DATE,
+                genre = DEFAULT_MOVIE_GENRE,
+                director = DEFAULT_MOVIE_DIRECTOR,
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -78,23 +80,25 @@ class MovieControllerIT : BaseIntegrationTest() {
     @Test
     fun `should retrieve movie by id successfully`() {
         // Create a movie using isolated data
-        val movieRequest = createTestMovie(
-            title = RETRIEVE_TEST_SUFFIX,
-            description = "A test movie for retrieval testing",
-            releaseDate = "2024-01-01",
-            genre = "Action",
-            director = DEFAULT_MOVIE_DIRECTOR
-        )
+        val movieRequest =
+            createTestMovie(
+                title = RETRIEVE_TEST_SUFFIX,
+                description = "A test movie for retrieval testing",
+                releaseDate = "2024-01-01",
+                genre = "Action",
+                director = DEFAULT_MOVIE_DIRECTOR,
+            )
 
-        val movieResponse = given()
-            .contentType(ContentType.JSON)
-            .body(movieRequest)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movieResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movieRequest)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdMovieId = movieResponse.path<String>("id")
 
@@ -112,13 +116,14 @@ class MovieControllerIT : BaseIntegrationTest() {
     @Test
     fun `should retrieve movies with pagination`() {
         // Create a test movie using isolated data
-        val movieRequest = createTestMovie(
-            title = PAGINATION_TEST_SUFFIX,
-            description = "A test movie for pagination testing",
-            releaseDate = "2024-01-01",
-            genre = "Comedy",
-            director = DEFAULT_MOVIE_DIRECTOR
-        )
+        val movieRequest =
+            createTestMovie(
+                title = PAGINATION_TEST_SUFFIX,
+                description = "A test movie for pagination testing",
+                releaseDate = "2024-01-01",
+                genre = "Comedy",
+                director = DEFAULT_MOVIE_DIRECTOR,
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -147,13 +152,14 @@ class MovieControllerIT : BaseIntegrationTest() {
     @Test
     fun `should retrieve movies using simple GET endpoint`() {
         // Create a test movie
-        val movieRequest = createTestMovie(
-            title = SIMPLE_GET_TEST_SUFFIX,
-            description = "A test movie for simple GET endpoint",
-            releaseDate = "2024-01-01",
-            genre = "Test",
-            director = DEFAULT_MOVIE_DIRECTOR
-        )
+        val movieRequest =
+            createTestMovie(
+                title = SIMPLE_GET_TEST_SUFFIX,
+                description = "A test movie for simple GET endpoint",
+                releaseDate = "2024-01-01",
+                genre = "Test",
+                director = DEFAULT_MOVIE_DIRECTOR,
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -180,22 +186,24 @@ class MovieControllerIT : BaseIntegrationTest() {
     @Test
     fun `should return validation errors for invalid movie input`() {
         // Create invalid movie data programmatically
-        val invalidMovieRequest = mapOf(
-            "title" to "", // Empty title
-            "description" to "", // Empty description
-            "release_date" to "invalid-date", // Invalid date format
-            "genre" to "", // Empty genre
-            "director" to "" // Empty director
-        )
+        val invalidMovieRequest =
+            mapOf(
+                "title" to "", // Empty title
+                "description" to "", // Empty description
+                "release_date" to "invalid-date", // Invalid date format
+                "genre" to "", // Empty genre
+                "director" to "", // Empty director
+            )
 
-        val response = given()
-            .contentType(ContentType.JSON)
-            .body(invalidMovieRequest)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .extract()
-            .response()
+        val response =
+            given()
+                .contentType(ContentType.JSON)
+                .body(invalidMovieRequest)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .extract()
+                .response()
 
         // The API should return some error status (400 or 500)
         assert(response.statusCode >= STATUS_BAD_REQUEST) {
@@ -203,12 +211,12 @@ class MovieControllerIT : BaseIntegrationTest() {
         }
     }
 
-
     @Test
     fun `should return error for non-existent movie`() {
+        val nonExistentUUID = "00000000-0000-0000-0000-000000000000"
         given()
             .`when`()
-            .get("$MOVIES_ENDPOINT/$NON_EXISTENT_UUID")
+            .get("$MOVIES_ENDPOINT/$nonExistentUUID")
             .then()
             .statusCode(STATUS_NOT_FOUND)
             .body("status", equalTo(STATUS_NOT_FOUND))
@@ -219,13 +227,14 @@ class MovieControllerIT : BaseIntegrationTest() {
     @Test
     fun `should handle pagination edge cases`() {
         // Create a test movie first
-        val movieRequest = createTestMovie(
-            title = "Pagination Edge Case Movie",
-            description = "A test movie for pagination edge cases",
-            releaseDate = "2024-01-01",
-            genre = "Test",
-            director = DEFAULT_MOVIE_DIRECTOR
-        )
+        val movieRequest =
+            createTestMovie(
+                title = "Pagination Edge Case Movie",
+                description = "A test movie for pagination edge cases",
+                releaseDate = "2024-01-01",
+                genre = "Test",
+                director = DEFAULT_MOVIE_DIRECTOR,
+            )
 
         given()
             .contentType(ContentType.JSON)

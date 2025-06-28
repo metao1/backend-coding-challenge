@@ -3,11 +3,9 @@ package com.movie.rate.integration
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
-
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
@@ -20,22 +18,21 @@ import org.springframework.http.HttpStatus
  * - API contract validation for user endpoints
  */
 class UserControllerIT : BaseIntegrationTest() {
-
     companion object {
         // Default Test Values
         private const val DEFAULT_USER_EMAIL = "integration.test@example.com"
         private const val DEFAULT_USERNAME = "integrationtest"
         private const val DEFAULT_FULL_NAME = "Integration Test User"
-
     }
 
     @Test
     fun `should create user with valid data`() {
-        val userRequest = createTestUser(
-            email = DEFAULT_USER_EMAIL,
-            username = DEFAULT_USERNAME,
-            fullName = DEFAULT_FULL_NAME
-        )
+        val userRequest =
+            createTestUser(
+                email = DEFAULT_USER_EMAIL,
+                username = DEFAULT_USERNAME,
+                fullName = DEFAULT_FULL_NAME,
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -54,21 +51,23 @@ class UserControllerIT : BaseIntegrationTest() {
     @Test
     fun `should retrieve user by id successfully`() {
         // Create a user using isolated data
-        val userRequest = createTestUser(
-            email = "retrieve.test@example.com",
-            username = "retrievetest",
-            fullName = "Retrieve Test User"
-        )
+        val userRequest =
+            createTestUser(
+                email = "retrieve.test@example.com",
+                username = "retrievetest",
+                fullName = "Retrieve Test User",
+            )
 
-        val userResponse = given()
-            .contentType(ContentType.JSON)
-            .body(userRequest)
-            .`when`()
-            .post(USERS_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val userResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(userRequest)
+                .`when`()
+                .post(USERS_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdUserId = userResponse.path<String>("id")
 
@@ -87,13 +86,14 @@ class UserControllerIT : BaseIntegrationTest() {
     @Test
     fun `should accept valid JSON format for API contract validation`() {
         // JSON-based test for API contract validation
-        val jsonPayload = """
+        val jsonPayload =
+            """
             {
                 "email": "contract.test@example.com",
                 "username": "contracttest",
                 "full_name": "Contract Test User"
             }
-        """.trimIndent()
+            """.trimIndent()
 
         given()
             .contentType(ContentType.JSON)
@@ -112,11 +112,12 @@ class UserControllerIT : BaseIntegrationTest() {
     @Test
     fun `should return validation errors for invalid user input`() {
         // Create invalid user data programmatically
-        val invalidUserRequest = mapOf(
-            "email" to "invalid-email", // Invalid email format
-            "username" to "", // Empty username
-            "full_name" to "" // Empty full name
-        )
+        val invalidUserRequest =
+            mapOf(
+                "email" to "invalid-email", // Invalid email format
+                "username" to "", // Empty username
+                "full_name" to "", // Empty full name
+            )
 
         given()
             .contentType(ContentType.JSON)

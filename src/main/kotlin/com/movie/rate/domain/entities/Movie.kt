@@ -13,7 +13,7 @@ data class Movie private constructor(
     val genre: String,
     val director: String,
     private var _createdAt: LocalDateTime = LocalDateTime.now(),
-    private var _updatedAt: LocalDateTime? = null
+    private var _updatedAt: LocalDateTime? = null,
 ) {
     val description: String get() = _description
     val createdAt: LocalDateTime get() = _createdAt
@@ -26,7 +26,7 @@ data class Movie private constructor(
             description: String,
             releaseDate: LocalDate,
             genre: String,
-            director: String
+            director: String,
         ): Movie = Movie(id, title, description, releaseDate, genre, director)
 
         fun fromPersistence(
@@ -37,7 +37,7 @@ data class Movie private constructor(
             genre: String,
             director: String,
             createdAt: LocalDateTime,
-            updatedAt: LocalDateTime?
+            updatedAt: LocalDateTime?,
         ): Movie = Movie(id, title, description, releaseDate, genre, director, createdAt, updatedAt)
     }
 
@@ -46,11 +46,12 @@ data class Movie private constructor(
         _updatedAt = LocalDateTime.now()
     }
 
-    override fun equals(other: Any?): Boolean = when {
-        this === other -> true
-        other !is Movie -> false
-        else -> id == other.id
-    }
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> true
+            other !is Movie -> false
+            else -> id == other.id
+        }
 
     override fun hashCode(): Int = id.hashCode()
 

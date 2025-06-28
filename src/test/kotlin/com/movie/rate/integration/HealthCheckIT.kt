@@ -2,7 +2,6 @@ package com.movie.rate.integration
 
 import io.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
-
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
@@ -14,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class HealthCheckIT : BaseIntegrationTest() {
-
     @Test
     fun `should provide health check endpoint with UP status`() {
         given()

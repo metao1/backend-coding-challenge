@@ -4,5 +4,5 @@ data class CreateRatingRequest(
     val userId: String,
     val movieId: String,
     val value: Int,
-    val comment: String?
+    val comment: String?,
 )

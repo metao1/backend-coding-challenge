@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class CreateMovieUseCaseTest {
-
     private val movieRepository = mockk<MovieRepository>()
     private val createMovieUseCase = CreateMovieUseCase(movieRepository)
 
     @Test
     fun `should create movie successfully`() {
         // Given
-        val request = CreateMovieRequest(
-            title = "The Matrix",
-            description = "A computer hacker learns from mysterious rebels about the true nature of his reality.",
-            releaseDate = LocalDate.of(1999, 3, 31),
-            genre = "Science Fiction",
-            director = "The Wachowskis"
-        )
+        val request =
+            CreateMovieRequest(
+                title = "The Matrix",
+                description = "A computer hacker learns from mysterious rebels about the true nature of his reality.",
+                releaseDate = LocalDate.of(1999, 3, 31),
+                genre = "Science Fiction",
+                director = "The Wachowskis",
+            )
 
         every { movieRepository.save(any()) } answers { firstArg() }
 
@@ -46,13 +46,16 @@ class CreateMovieUseCaseTest {
     @Test
     fun `should create movie with all valid fields`() {
         // Given
-        val request = CreateMovieRequest(
-            title = "Inception",
-            description = "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
-            releaseDate = LocalDate.of(2010, 7, 16),
-            genre = "Action",
-            director = "Christopher Nolan"
-        )
+        val request =
+            CreateMovieRequest(
+                title = "Inception",
+                description =
+                    """A thief who steals corporate secrets through dream-sharing technology
+                        is given the inverse task of planting an idea.""",
+                releaseDate = LocalDate.of(2010, 7, 16),
+                genre = "Action",
+                director = "Christopher Nolan",
+            )
 
         every { movieRepository.save(any()) } answers { firstArg() }
 
@@ -72,13 +75,14 @@ class CreateMovieUseCaseTest {
     fun `should handle movie with long description`() {
         // Given
         val longDescription = "A".repeat(1000) // Long but valid description
-        val request = CreateMovieRequest(
-            title = "Test Movie",
-            description = longDescription,
-            releaseDate = LocalDate.of(2023, 1, 1),
-            genre = "Drama",
-            director = "Test Director"
-        )
+        val request =
+            CreateMovieRequest(
+                title = "Test Movie",
+                description = longDescription,
+                releaseDate = LocalDate.of(2023, 1, 1),
+                genre = "Drama",
+                director = "Test Director",
+            )
 
         every { movieRepository.save(any()) } answers { firstArg() }
 

@@ -12,7 +12,7 @@ data class Rating private constructor(
     private var _value: RatingValue,
     private var _comment: String?,
     private var _createdAt: LocalDateTime = LocalDateTime.now(),
-    private var _updatedAt: LocalDateTime? = null
+    private var _updatedAt: LocalDateTime? = null,
 ) {
     val value: RatingValue get() = _value
     val comment: String? get() = _comment
@@ -24,7 +24,7 @@ data class Rating private constructor(
             userId: UserId,
             movieId: MovieId,
             value: RatingValue,
-            comment: String?
+            comment: String?,
         ): Rating = Rating(userId, movieId, value, comment)
 
         fun fromPersistence(
@@ -33,21 +33,25 @@ data class Rating private constructor(
             value: RatingValue,
             comment: String?,
             createdAt: LocalDateTime,
-            updatedAt: LocalDateTime?
+            updatedAt: LocalDateTime?,
         ): Rating = Rating(userId, movieId, value, comment, createdAt, updatedAt)
     }
 
-    fun updateRating(newValue: RatingValue, newComment: String?) {
+    fun updateRating(
+        newValue: RatingValue,
+        newComment: String?,
+    ) {
         _value = newValue
         _comment = newComment
         _updatedAt = LocalDateTime.now()
     }
 
-    override fun equals(other: Any?): Boolean = when {
-        this === other -> true
-        other !is Rating -> false
-        else -> userId == other.userId && movieId == other.movieId
-    }
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> true
+            other !is Rating -> false
+            else -> userId == other.userId && movieId == other.movieId
+        }
 
     override fun hashCode(): Int = 31 * userId.hashCode() + movieId.hashCode()
 

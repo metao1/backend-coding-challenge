@@ -1,9 +1,9 @@
 package com.movie.rate.application.usecases
 
-import com.movie.rate.domain.valueobjects.Email
 import com.movie.rate.application.dto.CreateUserRequestDto
 import com.movie.rate.domain.exception.UserAlreadyExistsException
 import com.movie.rate.domain.repositories.UserRepository
+import com.movie.rate.domain.valueobjects.Email
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class CreateUserUseCaseTest {
-
     private val userRepository = mockk<UserRepository>()
     private val createUserUseCase = CreateUserUseCase(userRepository)
 
     @Test
     fun `should create user successfully`() {
         // Given
-        val request = CreateUserRequestDto(
-            email = "john.doe@example.com",
-            username = "johndoe",
-            fullName = "John Doe"
-        )
+        val request =
+            CreateUserRequestDto(
+                email = "john.doe@example.com",
+                username = "johndoe",
+                fullName = "John Doe",
+            )
 
         every { userRepository.existsByEmail(Email(request.email)) } returns false
         every { userRepository.existsByUsername(request.username) } returns false
@@ -47,11 +47,12 @@ class CreateUserUseCaseTest {
     @Test
     fun `should throw exception when email already exists`() {
         // Given
-        val request = CreateUserRequestDto(
-            email = "john.doe@example.com",
-            username = "johndoe",
-            fullName = "John Doe"
-        )
+        val request =
+            CreateUserRequestDto(
+                email = "john.doe@example.com",
+                username = "johndoe",
+                fullName = "John Doe",
+            )
 
         every { userRepository.existsByEmail(Email(request.email)) } returns true
 
@@ -67,11 +68,12 @@ class CreateUserUseCaseTest {
     @Test
     fun `should throw exception when username already exists`() {
         // Given
-        val request = CreateUserRequestDto(
-            email = "john.doe@example.com",
-            username = "johndoe",
-            fullName = "John Doe"
-        )
+        val request =
+            CreateUserRequestDto(
+                email = "john.doe@example.com",
+                username = "johndoe",
+                fullName = "John Doe",
+            )
 
         every { userRepository.existsByEmail(Email(request.email)) } returns false
         every { userRepository.existsByUsername(request.username) } returns true

@@ -19,13 +19,14 @@ class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException::class)
     fun handleResourceNotFoundException(ex: ResourceNotFoundException): ResponseEntity<ErrorResponse> {
         logger.warn("Resource not found: ${ex.message}")
-        val errorResponse = ErrorResponse(
-            timestamp = LocalDateTime.now(),
-            status = HttpStatus.NOT_FOUND.value(),
-            error = "Not Found",
-            message = ex.message ?: "Resource not found",
-            path = null
-        )
+        val errorResponse =
+            ErrorResponse(
+                timestamp = LocalDateTime.now(),
+                status = HttpStatus.NOT_FOUND.value(),
+                error = "Not Found",
+                message = ex.message ?: "Resource not found",
+                path = null,
+            )
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
     }
 
@@ -33,31 +34,34 @@ class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ErrorResponse> {
         logger.warn("IllegalArgumentException: ${ex.message}")
-        val errorResponse = ErrorResponse(
-            timestamp = LocalDateTime.now(),
-            status = HttpStatus.BAD_REQUEST.value(),
-            error = "Bad Request",
-            message = ex.message ?: "Invalid argument",
-            path = null
-        )
+        val errorResponse =
+            ErrorResponse(
+                timestamp = LocalDateTime.now(),
+                status = HttpStatus.BAD_REQUEST.value(),
+                error = "Bad Request",
+                message = ex.message ?: "Invalid argument",
+                path = null,
+            )
         return ResponseEntity.badRequest().body(errorResponse)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<ValidationErrorResponse> {
-        val errors = ex.bindingResult.allErrors.associate { error ->
-            val fieldName = (error as FieldError).field
-            val errorMessage = error.defaultMessage ?: "Invalid value"
-            fieldName to errorMessage
-        }
+        val errors =
+            ex.bindingResult.allErrors.associate { error ->
+                val fieldName = (error as FieldError).field
+                val errorMessage = error.defaultMessage ?: "Invalid value"
+                fieldName to errorMessage
+            }
 
-        val errorResponse = ValidationErrorResponse(
-            timestamp = LocalDateTime.now(),
-            status = HttpStatus.BAD_REQUEST.value(),
-            error = "Validation Failed",
-            message = "Input validation failed",
-            errors = errors
-        )
+        val errorResponse =
+            ValidationErrorResponse(
+                timestamp = LocalDateTime.now(),
+                status = HttpStatus.BAD_REQUEST.value(),
+                error = "Validation Failed",
+                message = "Input validation failed",
+                errors = errors,
+            )
         return ResponseEntity.badRequest().body(errorResponse)
     }
 
@@ -66,7 +70,7 @@ class GlobalExceptionHandler {
         val status: Int,
         val error: String,
         val message: String,
-        val path: String?
+        val path: String?,
     )
 
     data class ValidationErrorResponse(
@@ -74,6 +78,6 @@ class GlobalExceptionHandler {
         val status: Int,
         val error: String,
         val message: String,
-        val errors: Map<String, String>
+        val errors: Map<String, String>,
     )
 }

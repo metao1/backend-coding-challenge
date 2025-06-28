@@ -12,11 +12,11 @@ data class MovieResponse(
     val genre: String,
     val director: String,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime?
+    val updatedAt: LocalDateTime?,
 ) {
     companion object {
-        fun fromDomain(movie: Movie): MovieResponse {
-            return MovieResponse(
+        fun fromDomain(movie: Movie): MovieResponse =
+            MovieResponse(
                 id = movie.id.toString(),
                 title = movie.title,
                 description = movie.description,
@@ -24,8 +24,7 @@ data class MovieResponse(
                 genre = movie.genre,
                 director = movie.director,
                 createdAt = movie.createdAt,
-                updatedAt = movie.updatedAt
+                updatedAt = movie.updatedAt,
             )
-        }
     }
 }

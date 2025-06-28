@@ -9,9 +9,6 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @EnableCaching
 class CacheConfiguration {
-
     @Bean
-    fun cacheManager(): CacheManager {
-        return ConcurrentMapCacheManager("movies", "moviePages", "users", "ratings")
-    }
+    fun cacheManager(): CacheManager = ConcurrentMapCacheManager("movies", "moviePages", "users", "ratings")
 }

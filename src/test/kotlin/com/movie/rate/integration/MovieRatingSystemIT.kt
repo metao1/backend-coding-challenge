@@ -5,7 +5,10 @@ import com.movie.rate.integration.Constants.Companion.RATINGS_ENDPOINT
 import com.movie.rate.integration.Constants.Companion.USERS_ENDPOINT
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.containsString
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
@@ -22,70 +25,73 @@ import org.springframework.test.annotation.DirtiesContext
  */
 @DirtiesContext
 class MovieRatingSystemIT : BaseIntegrationTest() {
-
     private fun createTestRating(
         userId: String,
         movieId: String,
         value: Int = 5,
-        comment: String = "Absolutely fantastic movie! Great storyline and excellent acting."
-    ): Map<String, Any> {
-        return mapOf(
+        comment: String = "Absolutely fantastic movie! Great storyline and excellent acting.",
+    ): Map<String, Any> =
+        mapOf(
             "user_id" to userId,
             "movie_id" to movieId,
             "value" to value,
-            "comment" to comment
+            "comment" to comment,
         )
-    }
 
     @Test
     fun `should create rating with valid data`() {
         // Create a user using programmatic approach
-        val userRequest = createTestUser(
-            email = "rating.test@example.com",
-            username = "ratingtest",
-            fullName = "Rating Test User"
-        )
+        val userRequest =
+            createTestUser(
+                email = "rating.test@example.com",
+                username = "ratingtest",
+                fullName = "Rating Test User",
+            )
 
-        val userResponse = given()
-            .contentType(ContentType.JSON)
-            .body(userRequest)
-            .`when`()
-            .post(USERS_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val userResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(userRequest)
+                .`when`()
+                .post(USERS_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdUserId = userResponse.path<String>("id")
 
         // Create a movie using programmatic approach
-        val movieRequest = createTestMovie(
-            title = "Rating Test Movie",
-            description = "A test movie for rating testing",
-            releaseDate = "2024-01-01",
-            genre = "Drama",
-            director = "Test Director"
-        )
+        val movieRequest =
+            createTestMovie(
+                title = "Rating Test Movie",
+                description = "A test movie for rating testing",
+                releaseDate = "2024-01-01",
+                genre = "Drama",
+                director = "Test Director",
+            )
 
-        val movieResponse = given()
-            .contentType(ContentType.JSON)
-            .body(movieRequest)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movieResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movieRequest)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdMovieId = movieResponse.path<String>("id")
 
         // Create rating using programmatic approach
-        val ratingRequest = createTestRating(
-            userId = createdUserId,
-            movieId = createdMovieId,
-            value = 5,
-            comment = "Absolutely fantastic movie! Great storyline and excellent acting."
-        )
+        val ratingRequest =
+            createTestRating(
+                userId = createdUserId,
+                movieId = createdMovieId,
+                value = 5,
+                comment = "Absolutely fantastic movie! Great storyline and excellent acting.",
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -104,52 +110,57 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
     @Test
     fun `should retrieve user ratings successfully`() {
         // Create a user using programmatic approach
-        val userRequest = createTestUser(
-            email = "userratings.test@example.com",
-            username = "userratingstest",
-            fullName = "User Ratings Test User"
-        )
+        val userRequest =
+            createTestUser(
+                email = "userratings.test@example.com",
+                username = "userratingstest",
+                fullName = "User Ratings Test User",
+            )
 
-        val userResponse = given()
-            .contentType(ContentType.JSON)
-            .body(userRequest)
-            .`when`()
-            .post(USERS_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val userResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(userRequest)
+                .`when`()
+                .post(USERS_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdUserId = userResponse.path<String>("id")
 
         // Create a movie using programmatic approach
-        val movieRequest = createTestMovie(
-            title = "User Ratings Test Movie",
-            description = "A test movie for user ratings testing",
-            releaseDate = "2024-01-01",
-            genre = "Thriller",
-            director = "Test Director"
-        )
+        val movieRequest =
+            createTestMovie(
+                title = "User Ratings Test Movie",
+                description = "A test movie for user ratings testing",
+                releaseDate = "2024-01-01",
+                genre = "Thriller",
+                director = "Test Director",
+            )
 
-        val movieResponse = given()
-            .contentType(ContentType.JSON)
-            .body(movieRequest)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movieResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movieRequest)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdMovieId = movieResponse.path<String>("id")
 
         // Create rating using programmatic approach
-        val ratingRequest = createTestRating(
-            userId = createdUserId,
-            movieId = createdMovieId,
-            value = 5,
-            comment = "Excellent movie for testing user ratings!"
-        )
+        val ratingRequest =
+            createTestRating(
+                userId = createdUserId,
+                movieId = createdMovieId,
+                value = 5,
+                comment = "Excellent movie for testing user ratings!",
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -174,52 +185,57 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
     @Test
     fun `should update existing rating when creating duplicate`() {
         // Create a user using programmatic approach
-        val userRequest = createTestUser(
-            email = "duplicate.test@example.com",
-            username = "duplicatetest",
-            fullName = "Duplicate Test User"
-        )
+        val userRequest =
+            createTestUser(
+                email = "duplicate.test@example.com",
+                username = "duplicatetest",
+                fullName = "Duplicate Test User",
+            )
 
-        val userResponse = given()
-            .contentType(ContentType.JSON)
-            .body(userRequest)
-            .`when`()
-            .post(USERS_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val userResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(userRequest)
+                .`when`()
+                .post(USERS_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdUserId = userResponse.path<String>("id")
 
         // Create a movie using programmatic approach
-        val movieRequest = createTestMovie(
-            title = "Duplicate Test Movie",
-            description = "A test movie for duplicate rating testing",
-            releaseDate = "2024-01-01",
-            genre = "Horror",
-            director = "Test Director"
-        )
+        val movieRequest =
+            createTestMovie(
+                title = "Duplicate Test Movie",
+                description = "A test movie for duplicate rating testing",
+                releaseDate = "2024-01-01",
+                genre = "Horror",
+                director = "Test Director",
+            )
 
-        val movieResponse = given()
-            .contentType(ContentType.JSON)
-            .body(movieRequest)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movieResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movieRequest)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val createdMovieId = movieResponse.path<String>("id")
 
         // Create initial rating using programmatic approach
-        val initialRatingRequest = createTestRating(
-            userId = createdUserId,
-            movieId = createdMovieId,
-            value = 5,
-            comment = "Initial rating comment"
-        )
+        val initialRatingRequest =
+            createTestRating(
+                userId = createdUserId,
+                movieId = createdMovieId,
+                value = 5,
+                comment = "Initial rating comment",
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -240,22 +256,24 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .body("[0].comment", equalTo("Initial rating comment"))
 
         // Create duplicate rating (should update existing) using programmatic approach
-        val duplicateRatingRequest = createTestRating(
-            userId = createdUserId,
-            movieId = createdMovieId,
-            value = 3,
-            comment = "Updated rating comment"
-        )
+        val duplicateRatingRequest =
+            createTestRating(
+                userId = createdUserId,
+                movieId = createdMovieId,
+                value = 3,
+                comment = "Updated rating comment",
+            )
 
         // Try to create duplicate rating - this should update the existing one
-        val duplicateResponse = given()
-            .contentType(ContentType.JSON)
-            .body(duplicateRatingRequest)
-            .`when`()
-            .post(RATINGS_ENDPOINT)
-            .then()
-            .extract()
-            .response()
+        val duplicateResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(duplicateRatingRequest)
+                .`when`()
+                .post(RATINGS_ENDPOINT)
+                .then()
+                .extract()
+                .response()
 
         // Verify the duplicate rating was handled successfully
         assert(duplicateResponse.statusCode == HttpStatus.CREATED.value()) {
@@ -285,72 +303,79 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
     @Test
     fun `should display user profile with all rated movies`() {
         // Create a user for the profile test
-        val userRequest = createTestUser(
-            email = "profile.test@example.com",
-            username = "profiletest",
-            fullName = "Profile Test User"
-        )
+        val userRequest =
+            createTestUser(
+                email = "profile.test@example.com",
+                username = "profiletest",
+                fullName = "Profile Test User",
+            )
 
-        val userResponse = given()
-            .contentType(ContentType.JSON)
-            .body(userRequest)
-            .`when`()
-            .post(USERS_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val userResponse =
+            given()
+                .contentType(ContentType.JSON)
+                .body(userRequest)
+                .`when`()
+                .post(USERS_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val userId = userResponse.path<String>("id")
 
         // Create multiple movies for the user profile
-        val movie1Request = createTestMovie(
-            title = "Profile Movie 1",
-            description = "First movie for profile testing",
-            releaseDate = "2024-01-01",
-            genre = "Action",
-            director = "Director 1"
-        )
+        val movie1Request =
+            createTestMovie(
+                title = "Profile Movie 1",
+                description = "First movie for profile testing",
+                releaseDate = "2024-01-01",
+                genre = "Action",
+                director = "Director 1",
+            )
 
-        val movie1Response = given()
-            .contentType(ContentType.JSON)
-            .body(movie1Request)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movie1Response =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movie1Request)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val movie1Id = movie1Response.path<String>("id")
 
-        val movie2Request = createTestMovie(
-            title = "Profile Movie 2",
-            description = "Second movie for profile testing",
-            releaseDate = "2024-02-01",
-            genre = "Comedy",
-            director = "Director 2"
-        )
+        val movie2Request =
+            createTestMovie(
+                title = "Profile Movie 2",
+                description = "Second movie for profile testing",
+                releaseDate = "2024-02-01",
+                genre = "Comedy",
+                director = "Director 2",
+            )
 
-        val movie2Response = given()
-            .contentType(ContentType.JSON)
-            .body(movie2Request)
-            .`when`()
-            .post(MOVIES_ENDPOINT)
-            .then()
-            .statusCode(HttpStatus.CREATED.value())
-            .extract()
-            .response()
+        val movie2Response =
+            given()
+                .contentType(ContentType.JSON)
+                .body(movie2Request)
+                .`when`()
+                .post(MOVIES_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .response()
 
         val movie2Id = movie2Response.path<String>("id")
 
         // Rate both movies with different ratings (valid range: 1-5)
-        val rating1Request = createTestRating(
-            userId = userId,
-            movieId = movie1Id,
-            value = 5,
-            comment = "Great action movie!"
-        )
+        val rating1Request =
+            createTestRating(
+                userId = userId,
+                movieId = movie1Id,
+                value = 5,
+                comment = "Great action movie!",
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -360,12 +385,13 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
             .then()
             .statusCode(HttpStatus.CREATED.value())
 
-        val rating2Request = createTestRating(
-            userId = userId,
-            movieId = movie2Id,
-            value = 3,
-            comment = "Decent comedy"
-        )
+        val rating2Request =
+            createTestRating(
+                userId = userId,
+                movieId = movie2Id,
+                value = 3,
+                comment = "Decent comedy",
+            )
 
         given()
             .contentType(ContentType.JSON)
@@ -377,13 +403,14 @@ class MovieRatingSystemIT : BaseIntegrationTest() {
 
         // Test user profile: Get all movies rated by the user
         // This represents the user profile functionality where users can view their rated movies
-        val profileResponse = given()
-            .`when`()
-            .get("$RATINGS_ENDPOINT/user/$userId")
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract()
-            .response()
+        val profileResponse =
+            given()
+                .`when`()
+                .get("$RATINGS_ENDPOINT/user/$userId")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .response()
 
         // Verify the profile contains both ratings
         val ratings = profileResponse.path<List<Map<String, Any>>>("$")

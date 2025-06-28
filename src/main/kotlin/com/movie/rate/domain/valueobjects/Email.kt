@@ -1,11 +1,9 @@
 package com.movie.rate.domain.valueobjects
 
-import kotlin.text.isNotBlank
-import kotlin.text.toRegex
-
 @JvmInline
-value class Email(val value: String) {
-
+value class Email(
+    val value: String,
+) {
     init {
         check(value.isNotBlank()) { "Email cannot be blank" }
         check(isValidEmail(value)) { "Invalid email format: $value" }

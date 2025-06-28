@@ -1,8 +1,9 @@
 package com.movie.rate.domain.valueobjects
 
 @JvmInline
-value class RatingValue(val value: Int) {
-
+value class RatingValue(
+    val value: Int,
+) {
     init {
         check(value in MIN_RATING..MAX_RATING) {
             "Rating value must be between $MIN_RATING and $MAX_RATING but was $value"
