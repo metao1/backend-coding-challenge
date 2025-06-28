@@ -7,7 +7,15 @@ plugins {
     kotlin("plugin.spring") version "2.2.0"
     kotlin("plugin.jpa") version "2.2.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
+    id("org.jlleitschuh.gradle.ktlint") version "13.0.0-rc.1"
 }
+
+// Version catalog - defined after plugins block
+val springDocVersion = "2.7.0"
+val mockkVersion = "1.13.9"
+val springMockkVersion = "4.0.2"
+val testContainersVersion = "1.19.6"
+val restAssuredVersion = "5.4.0"
 
 group = "com.movie.rating"
 version = "1.0.0"
@@ -39,7 +47,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
 
     // API Documentation
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion")
 
     // Development tools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -48,17 +56,18 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("io.mockk:mockk:1.13.9")
-    testImplementation("com.ninja-squad:springmockk:4.0.2")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 
-    // TestContainers
-    testImplementation("org.testcontainers:junit-jupiter:1.19.6")
-    testImplementation("org.testcontainers:postgresql:1.19.6")
+    // TestContainers BOM - manages all TestContainers versions
+    testImplementation(platform("org.testcontainers:testcontainers-bom:$testContainersVersion"))
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 
     // RestAssured
-    testImplementation("io.rest-assured:rest-assured:5.4.0")
-    testImplementation("io.rest-assured:json-path:5.4.0")
-    testImplementation("io.rest-assured:kotlin-extensions:5.4.0")
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
+    testImplementation("io.rest-assured:json-path:$restAssuredVersion")
+    testImplementation("io.rest-assured:kotlin-extensions:$restAssuredVersion")
 
     // Test runtime
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -93,8 +102,6 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-
 
 // JPA configuration for Kotlin
 allOpen {
