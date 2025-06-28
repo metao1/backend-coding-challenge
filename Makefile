@@ -37,3 +37,8 @@ clean:
 dev: format-check lint test
 	@echo "✅ Development workflow completed!"
 .PHONY: dev
+
+run:
+	@echo "🚀 Running application..."
+	./gradlew bootRun
+.PHONY: run
