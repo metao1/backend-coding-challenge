@@ -75,8 +75,8 @@ into more detail and explain how you would go about finishing those tasks.
 
 ## Technology Stack
 
-- **Language**: Kotlin 1.9.22
-- **Framework**: Spring Boot 3.2.3
+- **Language**: Kotlin 2.2.0
+- **Framework**: Spring Boot 3.5.3
 - **Database**: H2 (development) / PostgreSQL (testing/production)
 - **ORM**: Spring Data JPA with Hibernate
 - **Testing**: JUnit 5, MockK, RestAssured, TestContainers
