@@ -82,7 +82,7 @@ into more detail and explain how you would go about finishing those tasks.
 - **Testing**: JUnit 5, MockK, RestAssured, TestContainers
 - **Documentation**: OpenAPI 3 (Swagger)[http://localhost:8080/swagger-ui.html]
 - **Build Tool**: Gradle with Kotlin DSL
-- **CI/CD pipeline: Github Action code quality check and build
+- **CI/CD pipeline**: Github Action code quality check and build
 
 ## Architecture
 
