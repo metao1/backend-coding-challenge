@@ -11,6 +11,10 @@ trim_trailing_whitespace = true
 indent_size = 4
 continuation_indent_size = 4
 
-# ktlint rules configuration - disable chain wrapping to allow single-line Optional expressions
+# ktlint rules configuration - disable strict formatting rules for more flexibility
 ktlint_chain-wrapping = disabled
 ktlint_multiline-expression-wrapping = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_chain-wrapping = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled

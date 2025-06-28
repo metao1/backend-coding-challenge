@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicInteger
 
-
 /**
  * Test class to verify idempotent behavior in rating creation.
  * Tests that duplicate rating requests produce consistent results.
@@ -35,8 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class ConcurrencyHandleMultpleMovieRateTest {
-
+class ConcurrencyHandleMultipleMovieRateTest {
     @Autowired
     private lateinit var createRatingUseCase: CreateRatingUseCase
 
