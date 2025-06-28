@@ -1,5 +1,3 @@
-[![Java CI with Gradle](https://github.com/metao1/microservice-online-store/actions/workflows/gradle.yml/badge.svg)](https://github.com/metao1/backend-coding-challenge/actions/workflows/quality-checks.yml)
-
 # Backend Senior Coding Challenge 🍿
 
 Welcome to our Movie Rating System Coding Challenge! We appreciate you taking
@@ -16,24 +14,24 @@ performance. 💪**
 
 ## ✅ Requirements
 
-- [ ] The backend should expose RESTful endpoints to handle user input and
+- [x] The backend should expose RESTful endpoints to handle user input and
   return movie ratings.
-- [ ] The system should store data in a database. You can use any existing
+- [x] The system should store data in a database. You can use any existing
   dataset or API to populate the initial database.
-- [ ] Implement user endpoints to create and view user information.
-- [ ] Implement movie endpoints to create and view movie information.
-- [ ] Implement a rating system to rate the entertainment value of a movie.
-- [ ] Implement a basic profile where users can view their rated movies.
-- [ ] Include unit tests to ensure the reliability of your code.
-- [ ] Ensure proper error handling and validation of user inputs.
+- [x] Implement user endpoints to create and view user information.
+- [x] Implement movie endpoints to create and view movie information.
+- [x] Implement a rating system to rate the entertainment value of a movie.
+- [x] Implement a basic profile where users can view their rated movies.
+- [x] Include unit tests to ensure the reliability of your code.
+- [x] Ensure proper error handling and validation of user inputs.
 
 ## ✨ Bonus Points
 
 - [ ] Implement authentication and authorization mechanisms for users.
-- [ ] Provide documentation for your API endpoints using tools like Swagger.
-- [ ] Implement logging to record errors and debug information.
-- [ ] Implement caching mechanisms to improve the rating system's performance.
-- [ ] Implement CI/CD quality gates.
+- [x] Provide documentation for your API endpoints using tools like Swagger.
+- [x] Implement logging to record errors and debug information.
+- [x] Implement caching mechanisms to improve the rating system's performance.
+- [x] Implement CI/CD quality gates.
 
 ## 📋 Evaluation Criteria
 
@@ -70,3 +68,190 @@ Part of the exercise is to see what you prioritize first when you have a limited
 amount of time. For any unfinished tasks, please do add `TODO` comments to
 your code with a short explanation. You will be given an opportunity later to go
 into more detail and explain how you would go about finishing those tasks.
+
+---
+
+# 🚀 Implementation Details
+
+## Technology Stack
+
+- **Language**: Kotlin 1.9.22
+- **Framework**: Spring Boot 3.2.3
+- **Database**: H2 (development) / PostgreSQL (testing/production)
+- **ORM**: Spring Data JPA with Hibernate
+- **Testing**: JUnit 5, MockK, RestAssured, TestContainers
+- **Documentation**: OpenAPI 3 (Swagger)[http://localhost:8080/swagger-ui.html]
+- **Build Tool**: Gradle with Kotlin DSL
+- **CI/CD pipeline: Github Action code quality check and build
+
+## Architecture
+
+This implementation follows **Pragmatic DDD** and **Clean Architecture** principles:
+
+### Domain Layer (`src/main/kotlin/com/movie/rate/domain/`)
+- **Entities**: `User`, `Movie`, `Rating` with business logic
+- **Value Objects**: `UserId`, `MovieId`, `Email`, `RatingValue` for type safety
+- **Repository Interfaces**: Define contracts for data access
+
+### Application Layer (`src/main/kotlin/com/movie/rate/application/`)
+- **Use Cases**: `CreateUserUseCase`, `CreateMovieUseCase`, `CreateRatingUseCase`, etc.
+- **DTOs**: Request/Response objects for application boundaries
+
+### Infrastructure Layer (`src/main/kotlin/com/movie/rate/infrastructure/`)
+- **JPA Entities**: Database mapping with proper relationships
+- **Repository Implementations**: Adapter pattern for domain repositories
+- **Configuration**: Spring configuration and caching
+
+### Presentation Layer (`src/main/kotlin/com/movie/rate/presentation/`)
+- **Controllers**: REST endpoints with comprehensive validation
+- **DTOs**: API-specific request/response objects
+- **Exception Handling**: Global error handling with proper HTTP status codes
+
+## Use cases
+Using use cases instead of a single service class is a concept coming from [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Java 21+
+- Docker (optional, for TestContainers)
+
+### Running the Application
+
+```bash
+# Build the project
+make clean build
+
+# Run the application
+make run
+```
+
+The application will start on `http://localhost:8080`
+
+### API Documentation
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **OpenAPI Spec**: http://localhost:8080/api-docs
+- **Health Check**: http://localhost:8080/actuator/health
+- **H2 Console**: http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:moviedb`, User: `sa`, Password: `password`)
+
+## 📋 API Endpoints
+
+### Users
+- `POST /api/users` - Create a new user
+- `GET /api/users/{id}` - Get user by ID
+
+### Movies
+- `POST /api/movies` - Create a new movie
+- `GET /api/movies/{id}` - Get movie by ID
+- `GET /api/movies` - Get all movies
+
+### Ratings
+- `POST /api/ratings` - Create or update a rating
+- `GET /api/ratings/user/{userId}` - Get user's ratings
+
+## 📊 Sample API Usage
+
+### Create User
+```bash
+curl -X POST http://localhost:8080/api/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john.doe@example.com",
+    "username": "johndoe",
+    "full_name": "John Doe"
+  }'
+```
+
+### Create Movie
+```bash
+curl -X POST http://localhost:8080/api/movies \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "The Matrix",
+    "description": "A computer hacker learns about the true nature of reality",
+    "release_date": "1999-03-31",
+    "genre": "Science Fiction",
+    "director": "The Wachowskis"
+  }'
+```
+
+### Create Rating
+```bash
+curl -X POST http://localhost:8080/api/ratings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "USER_ID_HERE",
+    "movie_id": "MOVIE_ID_HERE",
+    "value": 5,
+    "comment": "Amazing movie!"
+  }'
+```
+
+## 🧪 Testing
+
+### Run All Tests
+```bash
+make test
+```
+
+## 🎯 Key Features
+
+### Domain-Driven Design
+- **Rich Domain Models** with business logic encapsulated in entities
+- **Value Objects** for type safety (`UserId`, `Email`, `RatingValue`)
+- **Repository Pattern** with clean separation between domain and infrastructure
+- **Use Cases** that orchestrate business operations
+
+### Kotlin Best Practices
+- **Data Classes** for immutable DTOs with automatic equals/hashCode
+- **Value Classes** for type-safe IDs and values
+- **Null Safety** throughout the codebase
+- **Extension Functions** and idiomatic Kotlin patterns
+
+### Testing Strategy
+- **Unit Tests** for domain logic with MockK
+- **Integration Tests** using RestAssured with real JSON data files
+- **TestContainers** for database integration testing
+- **Performance Tests** for concurrent request handling
+
+### Data & Validation
+- **Comprehensive Input Validation** with meaningful error messages
+- **Global Exception Handling** with proper HTTP status codes
+- **Database Constraints** ensuring data integrity
+- **Caching Strategy** with Spring Cache and JPA persistence context
+
+## 🗄️ Test Data
+
+The application uses clean test data creation:
+- **Integration Tests**: Create isolated test data for each test
+- **Constants**: All test values use constants for maintainability
+- **No Shared State**: Each test creates its own data to avoid dependencies
+
+Test data creation is handled programmatically in integration tests for better reliability.
+
+## 🔧 Production Considerations
+
+### Database Migration
+For production, update `application.yml`:
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moviedb
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use Flyway/Liquibase for migrations
+```
+
+### Environment Variables
+```bash
+export DB_USERNAME=your_db_user
+export DB_PASSWORD=your_db_password
+export SPRING_PROFILES_ACTIVE=production
+```
+
+### Build Production JAR
+```bash
+make run
+```
