@@ -8,6 +8,8 @@ import com.movie.rate.domain.repositories.SortDirection
 import com.movie.rate.domain.valueobjects.MovieId
 import com.movie.rate.infrastructure.entities.MovieJpaEntity
 import com.movie.rate.infrastructure.persistence.repositories.MovieJpaRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
@@ -18,16 +20,19 @@ class MovieRepositoryImpl(
     private val movieJpaRepository: MovieJpaRepository
 ) : MovieRepository {
 
+    @CacheEvict(value = ["movies", "moviePages"], allEntries = true)
     override fun save(movie: Movie): Movie {
         val jpaEntity = MovieJpaEntity.fromDomain(movie)
         val savedEntity = movieJpaRepository.save(jpaEntity)
         return savedEntity.toDomain()
     }
 
+    @Cacheable("movies")
     override fun findById(id: MovieId): Movie? {
         return movieJpaRepository.findByUuid(id.value)?.toDomain()
     }
 
+    @Cacheable("moviePages")
     override fun findAll(pageRequest: PageRequest): PageResult<Movie> {
         val springPageRequest = createSpringPageRequest(pageRequest)
         val page = movieJpaRepository.findAll(springPageRequest)

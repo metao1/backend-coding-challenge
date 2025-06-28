@@ -6,6 +6,7 @@ import com.movie.rate.domain.valueobjects.Email
 import com.movie.rate.domain.valueobjects.UserId
 import com.movie.rate.infrastructure.entities.UserJpaEntity
 import com.movie.rate.infrastructure.persistence.repositories.UserJpaRepository
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Repository
 import java.util.Optional
@@ -15,6 +16,7 @@ class UserRepositoryImpl(
     private val userJpaRepository: UserJpaRepository
 ) : UserRepository {
 
+    @CacheEvict(value = ["users"], allEntries = true)
     override fun save(user: User): User {
         val jpaEntity = UserJpaEntity.fromDomain(user)
         val savedEntity = userJpaRepository.save(jpaEntity)
@@ -26,7 +28,6 @@ class UserRepositoryImpl(
         Optional.ofNullable(userJpaRepository.findByUuid(id.value))
             .map { it.toDomain() }
             .orElse(null)
-
 
 
     override fun existsByEmail(email: Email): Boolean =
